@@ -5,10 +5,24 @@
 1. [Requirements](#requirements)
 1. [Contributing](#contributing)
 1. [License](#license)
+1. [Development](#development)
+   1. [Installing Dependencies](#installing-dependencies)
 
 ## Requirements
 
-- Node 22.14.0^
+- Node v22.14.0
+- pnpm v10.8.0
+
+## Development
+
+#### Installing Dependencies
+
+From within the root directory:
+
+```sh
+$ nvm use
+$ pnpm install
+```
 
 ## Contributing
 
