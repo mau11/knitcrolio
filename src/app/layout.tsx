@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Leckerli_One } from "next/font/google";
 import "./globals.css";
+import Navbar from "@components/NavBar";
 
 const leckerli = Leckerli_One({
   weight: "400",
@@ -20,6 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={leckerli.variable}>
+        <Navbar />
         {children}
         <footer>
           <p>© 2025 knitcrolio </p>
