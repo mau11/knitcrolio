@@ -8,10 +8,8 @@
 }
 
 @layer base {
-  html,
-  body {
+  html {
     max-width: 100vw;
-    overflow-x: hidden;
   }
   body {
     color: var(--foreground);

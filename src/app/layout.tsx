@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={leckerli.variable}>
+      <body className="max-w-xl max-w-[90vw] mx-auto overflow-x-hiddenmx-auto">
         <Navbar />
         {children}
         <footer>
