@@ -22,7 +22,7 @@
     @apply text-4xl font-bold text-aqua font-leckerli;
   }
   h2 {
-    @apply text-2xl font-bold text-aqua font-leckerli;
+    @apply text-2xl text-aqua font-leckerli;
   }
   * {
     box-sizing: border-box;

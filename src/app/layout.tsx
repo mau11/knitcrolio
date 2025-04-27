@@ -20,9 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="max-w-xl max-w-[90vw] mx-auto overflow-x-hiddenmx-auto">
+      <body className="max-w-[90vw] mx-auto overflow-x-hidden">
         <Navbar />
-        {children}
+        <main>{children}</main>
         <footer>
           <p>© 2025 knitcrolio </p>
         </footer>

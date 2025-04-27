@@ -9,8 +9,7 @@ const Navbar = () => {
         Knitcrolio
       </Link>
       <div className="space-x-8">
-        <Link href="/projects">Projects</Link>
-        <Link href="/stash">Stash</Link>
+        <Link href="/yarn">Yarn</Link>
       </div>
     </nav>
   );
