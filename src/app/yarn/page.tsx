@@ -34,15 +34,15 @@ const YarnPage = () => {
   return (
     <div className="py-4">
       <h1 className="text-2xl mb-4">My Yarn Stash</h1>
-      <button
-        onClick={() => router.push("/yarn/new")}
-        className="px-4 py-2 bg-blue-500 text-white disabled:bg-gray-400"
-        aria-label="Add new yarn"
-      >
-        Add New Yarn
-      </button>
       {stash?.length > 0 ? (
         <section>
+          <button
+            onClick={() => router.push("/yarn/new")}
+            className="px-4 py-2 bg-blue-500 text-white disabled:bg-gray-400"
+            aria-label="Add new yarn"
+          >
+            Add New Yarn
+          </button>
           <div className="grid grid-cols-3 gap-4 mt-6">
             {stash.map((yarn) => (
               <YarnCard key={yarn.id} yarn={yarn} />
@@ -51,8 +51,14 @@ const YarnPage = () => {
         </section>
       ) : (
         <>
-          <p>Your yarn stash is empty :(. Add new yarn below:</p>
-          <YarnForm />
+          <p>Your yarn stash is empty :(.</p>
+          <button
+            onClick={() => router.push("/yarn/new")}
+            className="px-4 py-2 bg-blue-500 text-white disabled:bg-gray-400"
+            aria-label="Add new yarn"
+          >
+            Add New Yarn
+          </button>
         </>
       )}
     </div>

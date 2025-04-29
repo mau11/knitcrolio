@@ -1,15 +1,15 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Yarn } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
   try {
-    const data = await request.json();
-    const { brand, type, color, colorFamily, weight, material, qty } = data;
+    const data: Yarn = await request.json();
+    const { brand, yarnType, color, colorFamily, weight, material, qty } = data;
     if (
       !brand ||
-      !type ||
+      !yarnType ||
       !color ||
       !colorFamily ||
       !weight ||

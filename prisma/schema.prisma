@@ -14,16 +14,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// The Yarn model defines the structure of the yarn data in the database.
 model Yarn {
   id          Int     @id @default(autoincrement())
   brand       String
-  type        String
-  color       String
-  colorFamily String
-  weight      String
-  material    String
-  care        String?
-  lot         String?
+  yarnType    String // The brand's specific type or variety yarn.
+  color       String // The brand's name of the color of the yarn.
+  colorFamily String // The general color family of the yarn (e.g., red, blue).
+  weight      String // The yarn weight (e.g., medium, bulky).
+  material    String // The material the yarn is made from (e.g., acrylic, polyester).
+  care        String? // Optional: Care instructions for the yarn
+  skeinWeight String? // Optional: The weight of the skein (e.g., 10.5 oz)
+  qty         Int // Number of skeins for this particular type of yarn
   notes       String?
-  qty         Int
 }
