@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import YarnCard from "@components/YarnCard";
-import YarnForm from "@components/YarnForm";
-import { getYarn } from "@lib/api";
+import { getYarn, deleteYarn } from "@lib/api";
 import { Yarn as YarnType } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
@@ -31,6 +30,16 @@ const YarnPage = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteYarn(id);
+      setStash((prev) => prev.filter((y) => y.id !== id));
+    } catch (err) {
+      console.error("Error deleting yarn:", err);
+      alert("Something went wrong while deleting.");
+    }
+  };
+
   return (
     <div className="py-4">
       <h1 className="text-2xl mb-4">My Yarn Stash</h1>
@@ -45,7 +54,7 @@ const YarnPage = () => {
           </button>
           <div className="grid grid-cols-3 gap-4 mt-6">
             {stash.map((yarn) => (
-              <YarnCard key={yarn.id} yarn={yarn} />
+              <YarnCard key={yarn.id} yarn={yarn} onDelete={handleDelete} />
             ))}
           </div>
         </section>

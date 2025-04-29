@@ -20,3 +20,7 @@ export const addYarn = (data: YarnFormFields) =>
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
+
+// Delete yarn by id
+export const deleteYarn = (id: number) =>
+  fetchAPI(`/api/deleteYarn/${id}`, { method: "DELETE" });
