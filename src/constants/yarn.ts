@@ -49,22 +49,22 @@ const yarnOptions: { [key: string]: string[] } = {
 };
 
 const fields: Field[] = [
-  { name: "brand", placeholder: "Brand", required: true, options: brands },
+  { name: "brand", placeholder: "Brand*", required: true, options: brands },
   {
     name: "yarnType",
-    placeholder: "Yarn Type",
+    placeholder: "Yarn Type*",
     required: true,
   },
-  { name: "color", placeholder: "Color", required: true },
+  { name: "color", placeholder: "Color*", required: true },
   {
     name: "colorFamily",
-    placeholder: "Color Family",
+    placeholder: "Color Family*",
     required: true,
     options: colorFamilies,
   },
   {
     name: "weight",
-    placeholder: "Yarn Weight",
+    placeholder: "Yarn Weight*",
     required: true,
     options: weights,
   },

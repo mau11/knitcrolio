@@ -9,41 +9,20 @@ type YarnCardProps = {
 };
 
 const YarnCard = ({ yarn, onDelete }: YarnCardProps) => {
-  const {
-    brand,
-    yarnType,
-    color,
-    colorFamily,
-    weight,
-    material,
-    care,
-    skeinWeight,
-    qty,
-    notes,
-    id,
-  } = yarn;
+  const { brand, yarnType, color, qty, id } = yarn;
 
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleCopy = () => {
+  const handleClick = (action: "copy" | "edit") => {
     // Navigate to YarnForm with pre-populated fields using query parameters
     const query = new URLSearchParams({
-      brand,
-      yarnType,
-      color,
-      colorFamily,
-      weight,
-      material,
-      care: care ?? "",
-      skeinWeight: skeinWeight ?? "",
-      qty: qty.toString(),
-      notes: notes ?? "",
+      id: id.toString(),
+      action,
     }).toString();
 
-    const copyUrl = `${pathname}/new?${query}`;
-
-    router.push(copyUrl);
+    action === "copy" && router.push(`${pathname}/new?${query}`);
+    action === "edit" && router.push(`${pathname}/edit?${query}`);
   };
 
   const handleDelete = () => {
@@ -70,10 +49,16 @@ const YarnCard = ({ yarn, onDelete }: YarnCardProps) => {
       </div>
       <div className="flex justify-between">
         <button
-          onClick={handleCopy}
+          onClick={() => handleClick("copy")}
           className="mt-4 inline-block text-sm text-blue-500 hover:text-blue-900 hover:underline transition-colors"
         >
           Copy
+        </button>
+        <button
+          onClick={() => handleClick("edit")}
+          className="mt-4 inline-block text-sm text-green-500 hover:text-green-900 hover:underline transition-colors"
+        >
+          Edit
         </button>
         <button
           onClick={handleDelete}

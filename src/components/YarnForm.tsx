@@ -1,11 +1,10 @@
 "use client";
 
 import { YarnFormFields } from "@custom-types/yarn";
-import { addYarn } from "@lib/api";
+import { addYarn, editYarn, getYarnById } from "@lib/api";
 import { useForm } from "react-hook-form";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { parseFormQueryParams } from "@utils/form";
 import { yarnOptions, fields } from "@constants/yarn";
 
 const initialFormState: YarnFormFields = {
@@ -35,19 +34,23 @@ const YarnForm = () => {
 
   const [selectedBrand, setSelectedBrand] = useState<string>("");
   const [yarnTypes, setYarnTypes] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
 
   const router = useRouter();
   const params = useSearchParams();
   const queryObject = Object.fromEntries(params.entries());
   const pathname = usePathname();
 
-  const { brand } = queryObject;
-
   const onSubmit = async (data: YarnFormFields) => {
     try {
-      await addYarn(data);
+      if (queryObject.id && queryObject.action === "edit") {
+        await editYarn(data, Number(queryObject.id));
+      } else {
+        await addYarn(data);
+      }
       router.replace(pathname);
-      reset();
+      reset(initialFormState);
     } catch (err) {
       console.error("Error adding yarn:", err);
     }
@@ -55,13 +58,24 @@ const YarnForm = () => {
 
   // Use default values or pre-populate based on query params
   useEffect(() => {
-    setValue("brand", brand as string);
-    setSelectedBrand(brand as string);
-
-    const values = parseFormQueryParams(params);
-    Object.entries(values).forEach(([key, value]) =>
-      setValue(key as keyof YarnFormFields, value)
-    );
+    const fetchYarn = async (paramId: number) => {
+      try {
+        const response = await getYarnById(paramId);
+        setSelectedBrand(response.brand);
+        const { id, ...responseWithoutId } = response;
+        reset(responseWithoutId as YarnFormFields);
+      } catch (err) {
+        console.error("Failed to load yarn", err);
+        setError("Failed to load yarn");
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (queryObject.id && queryObject.action) {
+      fetchYarn(Number(queryObject.id));
+    } else {
+      setLoading(false);
+    }
   }, [params]);
 
   useEffect(() => {
@@ -69,19 +83,14 @@ const YarnForm = () => {
       setYarnTypes(
         yarnOptions[selectedBrand as keyof typeof yarnOptions] || []
       );
-
-      // Only reset yarnType if the user is changing the brand manually
-      // not copying an existing yarn (from url params)
-      if (!params.get("yarnType")) {
-        setValue("yarnType", "");
-      }
     }
   }, [selectedBrand, setValue]);
 
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
   return (
     <div className="py-4">
-      <h1 className="text-2xl mb-4">Add New Yarn</h1>
-
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
         {fields.map((field) => (
           <div key={field.name} className="space-y-1">
@@ -177,7 +186,7 @@ const YarnForm = () => {
             min: 0.5,
           })}
           step="0.5"
-          placeholder="# of Skeins"
+          placeholder="# of Skeins*"
           className="block w-full border p-2"
         />
 
@@ -191,7 +200,7 @@ const YarnForm = () => {
       </form>
       <button
         disabled={isSubmitting}
-        className="px-4 py-2 bg-blue-500 text-white disabled:bg-gray-400"
+        className="px-4 py-2 mt-6 bg-blue-500 text-white disabled:bg-gray-400"
         onClick={() => router.push("/yarn")}
       >
         Return to Stash
