@@ -25,6 +25,6 @@ model Yarn {
   material    String // The material the yarn is made from (e.g., acrylic, polyester).
   care        String? // Optional: Care instructions for the yarn
   skeinWeight String? // Optional: The weight of the skein (e.g., 10.5 oz)
-  qty         Int // Number of skeins for this particular type of yarn
+  qty         Float // Number of skeins for this particular type of yarn
   notes       String?
 }
