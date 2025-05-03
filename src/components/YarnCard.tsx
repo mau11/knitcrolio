@@ -1,4 +1,7 @@
+"use client";
+
 import { Yarn } from "@prisma/client";
+import { usePathname, useRouter } from "next/navigation";
 
 type YarnCardProps = {
   yarn: Yarn;
@@ -6,7 +9,42 @@ type YarnCardProps = {
 };
 
 const YarnCard = ({ yarn, onDelete }: YarnCardProps) => {
-  const { brand, yarnType, id, color, qty } = yarn;
+  const {
+    brand,
+    yarnType,
+    color,
+    colorFamily,
+    weight,
+    material,
+    care,
+    skeinWeight,
+    qty,
+    notes,
+    id,
+  } = yarn;
+
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleCopy = () => {
+    // Navigate to YarnForm with pre-populated fields using query parameters
+    const query = new URLSearchParams({
+      brand,
+      yarnType,
+      color,
+      colorFamily,
+      weight,
+      material,
+      care: care ?? "",
+      skeinWeight: skeinWeight ?? "",
+      qty: qty.toString(),
+      notes: notes ?? "",
+    }).toString();
+
+    const copyUrl = `${pathname}/new?${query}`;
+
+    router.push(copyUrl);
+  };
 
   const handleDelete = () => {
     const confirmed = window.confirm(
@@ -30,12 +68,20 @@ const YarnCard = ({ yarn, onDelete }: YarnCardProps) => {
           <span className="font-semibold">Quantity:</span> {qty}
         </p>
       </div>
-      <button
-        onClick={handleDelete}
-        className="mt-4 inline-block text-sm text-red-600 hover:text-red-800 hover:underline transition-colors"
-      >
-        Delete
-      </button>
+      <div>
+        <button
+          onClick={handleCopy}
+          className="mt-4 inline-block text-sm text-blue-500 hover:text-blue-900 hover:underline transition-colors"
+        >
+          Copy
+        </button>
+        <button
+          onClick={handleDelete}
+          className="mt-4 inline-block text-sm text-red-600 hover:text-red-800 hover:underline transition-colors"
+        >
+          Delete
+        </button>
+      </div>
     </div>
   );
 };

@@ -20,9 +20,11 @@
     ],
     "paths": {
       "@components/*": ["./src/components/*"],
+      "@constants/*": ["./src/constants/*"],
       "@custom-types/*": ["./src/types/*"],
       "@lib/*": ["./src/lib/*"],
-      "@prisma/*": ["./src/generated/prisma/*"]
+      "@prisma/*": ["./src/generated/prisma/*"],
+      "@utils/*": ["./src/utils/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

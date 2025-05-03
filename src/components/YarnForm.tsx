@@ -3,8 +3,10 @@
 import { YarnFormFields } from "@custom-types/yarn";
 import { addYarn } from "@lib/api";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { parseFormQueryParams } from "@utils/form";
+import { yarnOptions, fields } from "@constants/yarn";
 
 const initialFormState: YarnFormFields = {
   brand: "",
@@ -33,96 +35,46 @@ const YarnForm = () => {
 
   const [selectedBrand, setSelectedBrand] = useState<string>("");
   const [yarnTypes, setYarnTypes] = useState<string[]>([]);
+
   const router = useRouter();
+  const params = useSearchParams();
+  const queryObject = Object.fromEntries(params.entries());
+  const pathname = usePathname();
+
+  const { brand } = queryObject;
 
   const onSubmit = async (data: YarnFormFields) => {
     try {
       await addYarn(data);
+      router.replace(pathname);
       reset();
     } catch (err) {
       console.error("Error adding yarn:", err);
     }
   };
 
-  const brands = [
-    "Bernat",
-    "Craftsmart",
-    "Lion Brand",
-    "Loops & Threads",
-    "Red Heart",
-    "Not Sure",
-  ];
-  const yarnOptions = {
-    Bernat: ["Baby Blanket", "Blanket", "Mega Bulky"],
-    Craftsmart: ["Value"],
-    "Lion Brand": ["Wool-Ease Thick & Quick"],
-    "Loops & Threads": ["Charisma"],
-    "Red Heart": ["Soft Baby Steps", "Super Saver"],
-    "Not Sure": ["Not Sure"],
-  };
-  const colorFamilies = [
-    "Red",
-    "Orange",
-    "Yellow",
-    "Green",
-    "Blue",
-    "Purple",
-    "Black",
-    "Grey",
-    "White",
-    "Multi-color",
-  ];
-  const weights = [
-    "0-Lace",
-    "1-Super Fine",
-    "2-Fine",
-    "3-Light",
-    "4-Medium",
-    "5-Bulky",
-    "6-Super Bulky",
-    "7-Jumbo",
-    "Not Sure",
-  ];
-  const fields = [
-    { name: "brand", placeholder: "Brand", required: true, options: brands },
-    {
-      name: "yarnType",
-      placeholder: "Yarn Type",
-      required: true,
-    },
-    { name: "color", placeholder: "Color", required: true },
-    {
-      name: "colorFamily",
-      placeholder: "Color Family",
-      required: true,
-      options: colorFamilies,
-    },
-    {
-      name: "weight",
-      placeholder: "Yarn Weight",
-      required: true,
-      options: weights,
-    },
-    { name: "material", placeholder: "Material", required: true },
-    {
-      name: "care",
-      placeholder: "Care Instructions (optional)",
-      required: false,
-    },
-    {
-      name: "skeinWeight",
-      placeholder: "Skein weight (optional)",
-      required: false,
-    },
-    { name: "notes", placeholder: "Notes (optional)", required: false },
-  ];
+  // Use default values or pre-populate based on query params
+  useEffect(() => {
+    setValue("brand", brand as string);
+    setSelectedBrand(brand as string);
+
+    const values = parseFormQueryParams(params);
+    Object.entries(values).forEach(([key, value]) =>
+      setValue(key as keyof YarnFormFields, value)
+    );
+  }, [params]);
 
   useEffect(() => {
     if (selectedBrand) {
       setYarnTypes(
         yarnOptions[selectedBrand as keyof typeof yarnOptions] || []
       );
-      setValue("yarnType", "");
+
+      // Only reset yarnType if the user is changing the brand manually
+      // not copying an existing yarn (from url params)
+      if (!params.get("yarnType")) {
+        setValue("yarnType", "");
+      }
     }
   }, [selectedBrand, setValue]);
 
@@ -144,6 +96,7 @@ const YarnForm = () => {
                   const brand = e.target.value;
                   setSelectedBrand(brand);
                   setValue("brand", brand);
+                  setValue("yarnType", "");
                 }}
                 value={selectedBrand}
                 className="block w-full border p-2"
