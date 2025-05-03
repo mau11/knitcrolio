@@ -48,7 +48,7 @@ const YarnCard = ({ yarn, onDelete }: YarnCardProps) => {
 
   const handleDelete = () => {
     const confirmed = window.confirm(
-      `Are you sure you want to delete "${brand} - ${yarnType}"?`
+      `Are you sure you want to delete your "${color} (${yarnType}) yarn"?`
     );
     if (confirmed) {
       onDelete(id);
@@ -56,7 +56,7 @@ const YarnCard = ({ yarn, onDelete }: YarnCardProps) => {
   };
 
   return (
-    <div className="rounded-2xl bg-white shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
+    <div className="rounded-2xl bg-white shadow-md md:p-6 p-4 hover:shadow-lg transition-shadow duration-300">
       <h2 className="mb-2">
         {brand} - {yarnType}
       </h2>
@@ -68,7 +68,7 @@ const YarnCard = ({ yarn, onDelete }: YarnCardProps) => {
           <span className="font-semibold">Quantity:</span> {qty}
         </p>
       </div>
-      <div>
+      <div className="flex justify-between">
         <button
           onClick={handleCopy}
           className="mt-4 inline-block text-sm text-blue-500 hover:text-blue-900 hover:underline transition-colors"

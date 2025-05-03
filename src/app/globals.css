@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --background: #ffffff;
+  --background: #f5fafa;
   --foreground: #171717;
   --color-aqua: #0aa;
   --font-leckerli: "Leckerli One";
@@ -20,11 +20,9 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  h1 {
-    @apply font-bold text-aqua;
-  }
+  h1,
   h2 {
-    @apply text-aqua;
+    @apply font-bold text-aqua;
   }
   * {
     box-sizing: border-box;
