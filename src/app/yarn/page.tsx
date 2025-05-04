@@ -5,6 +5,7 @@ import YarnCard from "@components/YarnCard";
 import { getYarn, deleteYarn } from "@lib/api";
 import { Yarn as YarnType } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { ExportYarn } from "@components/ExportYarn";
 
 const YarnPage = () => {
   const [stash, setStash] = useState<YarnType[]>([]);
@@ -45,13 +46,16 @@ const YarnPage = () => {
       <h1 className="text-2xl mb-4">My Yarn Stash</h1>
       {stash?.length > 0 ? (
         <section>
-          <button
-            onClick={() => router.push("/yarn/new")}
-            className="px-4 py-2 bg-blue-500 text-white disabled:bg-gray-400"
-            aria-label="Add new yarn"
-          >
-            Add New Yarn
-          </button>
+          <div className="flex justify-between">
+            <button
+              onClick={() => router.push("/yarn/new")}
+              className="px-4 py-2 bg-blue-500 text-white disabled:bg-gray-400"
+              aria-label="Add new yarn"
+            >
+              Add New Yarn
+            </button>
+            <ExportYarn yarnList={stash} />
+          </div>
           <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 mt-6">
             {stash.map((yarn) => (
               <YarnCard key={yarn.id} yarn={yarn} onDelete={handleDelete} />
