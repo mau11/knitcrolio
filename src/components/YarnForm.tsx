@@ -8,6 +8,7 @@ import { brands, colorFamilies, weights, yarnOptions } from "@constants/yarn";
 import { yarnSchema, YarnSchemaType } from "@lib/schemas/yarnSchema";
 import { Button } from "@components/Button";
 import DOMPurify from "dompurify";
+import { TextArea } from "@form/TextArea";
 
 const initialFormState: YarnSchemaType = {
   brand: "",
@@ -332,17 +333,13 @@ const YarnForm = () => {
 
         {/* Notes section */}
         <div className="w-full">
-          <label htmlFor="notes" className="block text-sm font-medium">
-            Notes
-          </label>
-          <textarea
-            {...register("notes")}
+          <TextArea
+            label="Notes"
+            fieldName="notes"
             placeholder="lot #, storage location, etc"
-            className="block w-full border p-2 mt-1"
+            register={register}
+            error={errors.notes?.message}
           />
-          {errors.notes && (
-            <p className="text-red-500 text-sm mt-1">{errors.notes.message}</p>
-          )}
         </div>
 
         {/* Image URL */}

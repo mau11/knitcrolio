@@ -22,6 +22,7 @@
       "@components/*": ["./src/components/*"],
       "@constants/*": ["./src/constants/*"],
       "@custom-types/*": ["./src/types/*"],
+      "@form/*": ["./src/components/form/*"],
       "@icons/*": ["./public/icons/*"],
       "@lib/*": ["./src/lib/*"],
       "@prisma/*": ["./src/generated/prisma/*"],
