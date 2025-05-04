@@ -1,8 +1,8 @@
 "use client";
 
 import { Yarn } from "@prisma/client";
-import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
+import YarnImage from "./YarnImage";
 
 type YarnCardProps = {
   yarn: Yarn;
@@ -36,7 +36,7 @@ const YarnCard = ({ yarn, onDelete }: YarnCardProps) => {
   };
 
   return (
-    <div className="rounded-2xl bg-white shadow-md md:p-6 p-4 hover:shadow-lg transition-shadow duration-300">
+    <div className="rounded-2xl bg-white shadow-md md:p-6 p-4 hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between">
       <h2 className="mb-2">
         {brand} - {yarnType}
       </h2>
@@ -49,16 +49,7 @@ const YarnCard = ({ yarn, onDelete }: YarnCardProps) => {
             <span className="font-semibold">Quantity:</span> {qty}
           </p>
         </div>
-        {yarn.imageUrl && (
-          <div className="self-center border rounded-lg border-gray-300 overflow-hidden">
-            <Image
-              src={yarn.imageUrl}
-              width={40}
-              height={40}
-              alt="Yarn preview"
-            />
-          </div>
-        )}
+        <YarnImage imageUrl={yarn.imageUrl} />
       </div>
       <div className="flex justify-between">
         <button
