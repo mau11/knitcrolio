@@ -24,7 +24,7 @@
 ## Requirements
 
 - Node v22.14.0
-- pnpm v10.9.0
+- pnpm v10.10.0
 
 ## Development
 

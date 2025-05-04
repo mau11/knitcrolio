@@ -1,5 +1,4 @@
-import { YarnFormFields } from "@custom-types/yarn";
-import { Yarn } from "@prisma/index";
+import { YarnSchemaType } from "@schemas/yarnSchema";
 
 const fetchAPI = async (url: string, options?: RequestInit) => {
   const response = await fetch(url, options);
@@ -18,7 +17,7 @@ export const getYarn = () => fetchAPI("/api/getYarn");
 export const getYarnById = (id: number) => fetchAPI(`/api/getYarn/${id}`);
 
 // Add new yarn
-export const addYarn = (data: YarnFormFields) =>
+export const addYarn = (data: YarnSchemaType) =>
   fetchAPI("/api/addYarn", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -26,7 +25,7 @@ export const addYarn = (data: YarnFormFields) =>
   });
 
 // Edit yarn
-export const editYarn = (data: YarnFormFields, id: number) =>
+export const editYarn = (data: YarnSchemaType, id: number) =>
   fetchAPI(`/api/editYarn/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },

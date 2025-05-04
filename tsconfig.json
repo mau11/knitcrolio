@@ -25,6 +25,7 @@
       "@icons/*": ["./public/icons/*"],
       "@lib/*": ["./src/lib/*"],
       "@prisma/*": ["./src/generated/prisma/*"],
+      "@schemas/*": ["./src/lib/schemas/*"],
       "@utils/*": ["./src/utils/*"]
     }
   },

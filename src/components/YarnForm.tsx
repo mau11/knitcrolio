@@ -1,13 +1,13 @@
 "use client";
 
-import { YarnFormFields } from "@custom-types/yarn";
 import { addYarn, editYarn, getYarnById } from "@lib/api";
 import { useForm } from "react-hook-form";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { yarnOptions, fields } from "@constants/yarn";
+import { yarnSchema, YarnSchemaType } from "@lib/schemas/yarnSchema";
 
-const initialFormState: YarnFormFields = {
+const initialFormState: YarnSchemaType = {
   brand: "",
   yarnType: "",
   color: "",
@@ -28,22 +28,35 @@ const YarnForm = () => {
     reset,
     formState: { isSubmitting, errors },
     setValue,
+    setError,
     watch,
-  } = useForm<YarnFormFields>({
+  } = useForm<YarnSchemaType>({
     defaultValues: initialFormState,
   });
 
   const [selectedBrand, setSelectedBrand] = useState<string>("");
   const [yarnTypes, setYarnTypes] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>("");
+  const [pageError, setPageError] = useState<string>("");
 
   const router = useRouter();
   const params = useSearchParams();
   const queryObject = Object.fromEntries(params.entries());
   const pathname = usePathname();
 
-  const onSubmit = async (data: YarnFormFields) => {
+  const onSubmit = async (rawData: YarnSchemaType) => {
+    const parsed = yarnSchema.safeParse(rawData);
+
+    if (!parsed.success) {
+      parsed.error.errors.forEach((err) => {
+        const field = err.path[0] as keyof YarnSchemaType;
+        setError(field, { message: err.message });
+      });
+      return;
+    }
+
+    const data = parsed.data;
+
     try {
       if (queryObject.id && queryObject.action === "edit") {
         await editYarn(data, Number(queryObject.id));
@@ -53,7 +66,7 @@ const YarnForm = () => {
       router.replace(pathname);
       reset(initialFormState);
     } catch (err) {
-      console.error("Error adding yarn:", err);
+      console.error("Error saving yarn:", err);
     }
   };
 
@@ -64,10 +77,10 @@ const YarnForm = () => {
         const response = await getYarnById(paramId);
         setSelectedBrand(response.brand);
         const { id, ...responseWithoutId } = response;
-        reset(responseWithoutId as YarnFormFields);
+        reset(responseWithoutId as YarnSchemaType);
       } catch (err) {
         console.error("Failed to load yarn", err);
-        setError("Failed to load yarn");
+        setPageError("Failed to load yarn");
       } finally {
         setLoading(false);
       }
@@ -88,7 +101,7 @@ const YarnForm = () => {
   }, [selectedBrand, setValue]);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (pageError) return <p>{pageError}</p>;
 
   return (
     <div className="py-4">
@@ -97,11 +110,7 @@ const YarnForm = () => {
           <div key={field.name} className="space-y-1">
             {field.name === "brand" ? (
               <select
-                {...register(field.name as keyof YarnFormFields, {
-                  required: field.required
-                    ? `${field.placeholder} is required`
-                    : false,
-                })}
+                {...register(field.name as keyof YarnSchemaType)}
                 onChange={(e) => {
                   const brand = e.target.value;
                   setSelectedBrand(brand);
@@ -122,11 +131,7 @@ const YarnForm = () => {
               </select>
             ) : field.name === "yarnType" ? (
               <select
-                {...register(field.name as keyof YarnFormFields, {
-                  required: field.required
-                    ? `${field.placeholder} is required`
-                    : false,
-                })}
+                {...register(field.name as keyof YarnSchemaType)}
                 disabled={!selectedBrand}
                 value={watch("yarnType")}
                 className="block w-full border p-2"
@@ -142,12 +147,8 @@ const YarnForm = () => {
               </select>
             ) : field.options ? (
               <select
-                {...register(field.name as keyof YarnFormFields, {
-                  required: field.required
-                    ? `${field.placeholder} is required`
-                    : false,
-                })}
-                value={watch(field.name as keyof YarnFormFields) ?? ""}
+                {...register(field.name as keyof YarnSchemaType)}
+                value={watch(field.name as keyof YarnSchemaType) ?? ""}
                 className="block w-full border p-2"
               >
                 <option value="" disabled>
@@ -161,19 +162,15 @@ const YarnForm = () => {
               </select>
             ) : (
               <input
-                {...register(field.name as keyof YarnFormFields, {
-                  required: field.required
-                    ? `${field.placeholder} is required`
-                    : false,
-                })}
+                {...register(field.name as keyof YarnSchemaType)}
                 placeholder={field.placeholder}
                 className="block w-full border p-2"
               />
             )}
 
-            {errors[field.name as keyof YarnFormFields] && (
+            {errors[field.name as keyof YarnSchemaType] && (
               <span className="text-red-500">
-                {errors[field.name as keyof YarnFormFields]?.message}
+                {errors[field.name as keyof YarnSchemaType]?.message}
               </span>
             )}
           </div>
@@ -181,11 +178,7 @@ const YarnForm = () => {
 
         <input
           type="number"
-          {...register("qty", {
-            valueAsNumber: true,
-            required: "Quantity is required",
-            min: 0.5,
-          })}
+          {...register("qty", { valueAsNumber: true })}
           step="0.5"
           placeholder="# of Skeins*"
           className="block w-full border p-2"
