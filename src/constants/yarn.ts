@@ -1,10 +1,3 @@
-interface Field {
-  name: string;
-  placeholder: string;
-  required: boolean;
-  options?: string[];
-}
-
 const brands: string[] = [
   "Bernat",
   "Craftsmart",
@@ -48,39 +41,4 @@ const yarnOptions: { [key: string]: string[] } = {
   "Not Sure": ["Not Sure"],
 };
 
-const fields: Field[] = [
-  { name: "brand", placeholder: "Brand*", required: true, options: brands },
-  {
-    name: "yarnType",
-    placeholder: "Yarn Type*",
-    required: true,
-  },
-  { name: "color", placeholder: "Color*", required: true },
-  {
-    name: "colorFamily",
-    placeholder: "Color Family*",
-    required: true,
-    options: colorFamilies,
-  },
-  {
-    name: "weight",
-    placeholder: "Yarn Weight*",
-    required: true,
-    options: weights,
-  },
-  { name: "material", placeholder: "Material", required: true },
-  {
-    name: "care",
-    placeholder: "Care Instructions (optional)",
-    required: false,
-  },
-  {
-    name: "skeinWeight",
-    placeholder: "Skein weight (optional)",
-    required: false,
-  },
-  { name: "notes", placeholder: "Notes (optional)", required: false },
-  { name: "imageUrl", placeholder: "Image link (optional)", required: false },
-];
-
-export { yarnOptions, fields };
+export { brands, colorFamilies, weights, yarnOptions };

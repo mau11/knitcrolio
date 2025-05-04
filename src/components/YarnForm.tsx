@@ -3,8 +3,8 @@
 import { addYarn, editYarn, getYarnById } from "@lib/api";
 import { useForm } from "react-hook-form";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { yarnOptions, fields } from "@constants/yarn";
+import { ChangeEvent, useEffect, useState } from "react";
+import { brands, colorFamilies, weights, yarnOptions } from "@constants/yarn";
 import { yarnSchema, YarnSchemaType } from "@lib/schemas/yarnSchema";
 import { Button } from "@components/Button";
 import DOMPurify from "dompurify";
@@ -75,13 +75,13 @@ const YarnForm = () => {
         await addYarn(data);
       }
       router.replace(pathname);
+      setSelectedBrand("");
       reset(initialFormState);
     } catch (err) {
       console.error("Error saving yarn:", err);
     }
   };
 
-  // Use default values or pre-populate based on query params
   useEffect(() => {
     const fetchYarn = async (paramId: number) => {
       try {
@@ -122,86 +122,245 @@ const YarnForm = () => {
     ? "Update Yarn"
     : "Add Yarn";
 
+  const handleBrandChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const brand = e.target.value;
+    setSelectedBrand(brand);
+    setValue("brand", brand);
+    setValue("yarnType", "");
+  };
+
   return (
     <div className="py-4">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 pb-6">
-        {fields.map((field) => (
-          <div key={field.name} className="space-y-1">
-            {field.name === "brand" ? (
-              <select
-                {...register(field.name as keyof YarnSchemaType)}
-                onChange={(e) => {
-                  const brand = e.target.value;
-                  setSelectedBrand(brand);
-                  setValue("brand", brand);
-                  setValue("yarnType", "");
-                }}
-                value={selectedBrand}
-                className="block w-full border p-2"
-              >
-                <option value="" disabled>
-                  {field.placeholder}
+        <div className="flex flex-wrap gap-4">
+          {/* Brand */}
+          <div className="flex-1">
+            <label htmlFor="brand" className="block text-sm font-medium">
+              Brand
+            </label>
+            <select
+              {...register("brand")}
+              onChange={handleBrandChange}
+              value={selectedBrand}
+              className="block w-full border p-2 mt-1"
+            >
+              <option value="" disabled>
+                Select Brand
+              </option>
+              {brands.map((option, index) => (
+                <option key={index} value={option}>
+                  {option}
                 </option>
-                {field.options?.map((option, index) => (
-                  <option key={index} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            ) : field.name === "yarnType" ? (
-              <select
-                {...register(field.name as keyof YarnSchemaType)}
-                disabled={!selectedBrand}
-                value={watch("yarnType")}
-                className="block w-full border p-2"
-              >
-                <option value="" disabled>
-                  {field.placeholder}
-                </option>
-                {yarnTypes.map((yarnType, index) => (
-                  <option key={index} value={yarnType}>
-                    {yarnType}
-                  </option>
-                ))}
-              </select>
-            ) : field.options ? (
-              <select
-                {...register(field.name as keyof YarnSchemaType)}
-                value={watch(field.name as keyof YarnSchemaType) ?? ""}
-                className="block w-full border p-2"
-              >
-                <option value="" disabled>
-                  {field.placeholder}
-                </option>
-                {field.options.map((option, index) => (
-                  <option key={index} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <input
-                {...register(field.name as keyof YarnSchemaType)}
-                placeholder={field.placeholder}
-                className="block w-full border p-2"
-              />
-            )}
-
-            {errors[field.name as keyof YarnSchemaType] && (
-              <span className="text-red-500">
-                {errors[field.name as keyof YarnSchemaType]?.message}
-              </span>
+              ))}
+            </select>
+            {errors.brand && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.brand.message}
+              </p>
             )}
           </div>
-        ))}
 
-        <input
-          type="number"
-          {...register("qty", { valueAsNumber: true })}
-          step="0.5"
-          placeholder="# of Skeins*"
-          className="block w-full border p-2"
-        />
+          {/* Brand Yarn Type */}
+          <div className="flex-1">
+            <label htmlFor="yarnType" className="block text-sm font-medium">
+              Yarn Type
+            </label>
+            <select
+              {...register("yarnType")}
+              disabled={!selectedBrand}
+              value={watch("yarnType")}
+              className="block w-full border p-2 mt-1"
+            >
+              <option value="" disabled>
+                Select Yarn Type
+              </option>
+              {yarnTypes.map((yarnType, index) => (
+                <option key={index} value={yarnType}>
+                  {yarnType}
+                </option>
+              ))}
+            </select>
+            {errors.yarnType && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.yarnType.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-4">
+          {/* Qty */}
+          <div className="w-1/8 sm:w-1/12">
+            <label htmlFor="qty" className="block text-sm font-medium">
+              Quantity
+            </label>
+            <input
+              {...register("qty", { valueAsNumber: true })}
+              type="number"
+              step="0.5"
+              placeholder="# of Skeins"
+              className="block w-full border p-2 mt-1"
+            />
+            {errors.qty && (
+              <p className="text-red-500 text-sm mt-1">{errors.qty.message}</p>
+            )}
+          </div>
+
+          {/* Color */}
+          <div className="flex-1">
+            <label htmlFor="color" className="block text-sm font-medium">
+              Color
+            </label>
+            <input
+              {...register("color")}
+              placeholder="Color"
+              className="block w-full border p-2 mt-1"
+            />
+            {errors.color && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.color.message}
+              </p>
+            )}
+          </div>
+
+          {/* Color Family */}
+          <div className="flex-1">
+            <label htmlFor="colorFamily" className="block text-sm font-medium">
+              Color Family
+            </label>
+            <select
+              {...register("colorFamily")}
+              className="block w-full border p-2 mt-1"
+              value={watch("colorFamily")}
+            >
+              <option value="" disabled>
+                Color Family
+              </option>
+              {colorFamilies.map((option, index) => (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            {errors.colorFamily && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.colorFamily.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-4">
+          {/* Yarn Weight */}
+          <div className="w-2/5 sm:w-1/4">
+            <label htmlFor="weight" className="block text-sm font-medium">
+              Yarn Weight
+            </label>
+
+            <select
+              {...register("weight")}
+              className="block w-full border p-2 mt-1"
+              value={watch("weight")}
+            >
+              <option value="" disabled>
+                Yarn Weight
+              </option>
+              {weights.map((option, index) => (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            {errors.weight && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.weight.message}
+              </p>
+            )}
+          </div>
+
+          {/* Skein Weight */}
+          <div className="flex-1 w-2/5 sm:w-1/6">
+            <label htmlFor="skeinWeight" className="block text-sm font-medium">
+              Skein Weight
+            </label>
+            <input
+              {...register("skeinWeight")}
+              placeholder="Skein Weight"
+              className="block w-full border p-2 mt-1"
+            />
+            {errors.skeinWeight && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.skeinWeight.message}
+              </p>
+            )}
+          </div>
+
+          {/* Material */}
+          <div className="w-full sm:w-1/2">
+            <label htmlFor="material" className="block text-sm font-medium">
+              Material
+            </label>
+            <input
+              {...register("material")}
+              placeholder="Material"
+              className="block w-full border p-2 mt-1"
+            />
+            {errors.material && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.material.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-4">
+          {/* Care */}
+          <div className="flex-1">
+            <label htmlFor="care" className="block text-sm font-medium">
+              Care
+            </label>
+            <input
+              {...register("care")}
+              placeholder="Care instructions"
+              className="block w-full border p-2 mt-1"
+            />
+            {errors.care && (
+              <p className="text-red-500 text-sm mt-1">{errors.care.message}</p>
+            )}
+          </div>
+        </div>
+
+        {/* Notes section */}
+        <div className="w-full">
+          <label htmlFor="notes" className="block text-sm font-medium">
+            Notes
+          </label>
+          <textarea
+            {...register("notes")}
+            placeholder="lot #, storage location, etc"
+            className="block w-full border p-2 mt-1"
+          />
+          {errors.notes && (
+            <p className="text-red-500 text-sm mt-1">{errors.notes.message}</p>
+          )}
+        </div>
+
+        {/* Image URL */}
+        <div className="flex-1">
+          <label htmlFor="imageUrl" className="block text-sm font-medium">
+            Image URL
+          </label>
+          <input
+            {...register("imageUrl")}
+            placeholder="https://www..."
+            className="block w-full border p-2 mt-1"
+          />
+          {errors.imageUrl && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.imageUrl.message}
+            </p>
+          )}
+        </div>
 
         <Button
           type="submit"
@@ -213,8 +372,8 @@ const YarnForm = () => {
       <Button
         disabled={isSubmitting}
         onClick={() => router.push("/yarn")}
-        ariaLabel="Return to Stash"
-        text="Return to Stash"
+        ariaLabel="Cancel"
+        text={"Cancel"}
       />
     </div>
   );
