@@ -16,9 +16,12 @@ const Footer = () => {
         >
           <div className="text-sm flex gap-1 items-center">
             Created with
-            <span role="img" aria-label="yarn emoji">
-              🧶
-            </span>
+            <Image
+              src="/images/fallbackYarnColor.png"
+              width={20}
+              height={20}
+              alt="Yarn ball emoji"
+            />
             by Mau
             <Image
               src="/icons/github-mark.png"
