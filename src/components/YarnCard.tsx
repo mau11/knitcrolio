@@ -3,6 +3,7 @@
 import { Yarn } from "@prisma/client";
 import { usePathname, useRouter } from "next/navigation";
 import YarnImage from "./YarnImage";
+import { Button } from "@components/Button";
 
 type YarnCardProps = {
   yarn: Yarn;
@@ -52,24 +53,24 @@ const YarnCard = ({ yarn, onDelete }: YarnCardProps) => {
         <YarnImage imageUrl={yarn.imageUrl} />
       </div>
       <div className="flex justify-between">
-        <button
+        <Button
           onClick={() => handleClick("copy")}
-          className="mt-4 inline-block text-sm text-blue-500 hover:text-blue-900 hover:underline transition-colors"
-        >
-          Copy
-        </button>
-        <button
+          btnClass="blueLink"
+          text="Copy"
+          ariaLabel="Copy"
+        />
+        <Button
           onClick={() => handleClick("edit")}
-          className="mt-4 inline-block text-sm text-green-600 hover:text-green-900 hover:underline transition-colors"
-        >
-          Edit
-        </button>
-        <button
+          btnClass="greenLink"
+          text="Edit"
+          ariaLabel="Edit"
+        />
+        <Button
           onClick={handleDelete}
-          className="mt-4 inline-block text-sm text-red-600 hover:text-red-800 hover:underline transition-colors"
-        >
-          Delete
-        </button>
+          btnClass="redLink"
+          text="Delete"
+          ariaLabel="Delete"
+        />
       </div>
     </div>
   );

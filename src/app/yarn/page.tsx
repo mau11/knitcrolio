@@ -6,6 +6,7 @@ import { getYarn, deleteYarn } from "@lib/api";
 import { Yarn as YarnType } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { ExportYarn } from "@components/ExportYarn";
+import { Button } from "@components/Button";
 
 const YarnPage = () => {
   const [stash, setStash] = useState<YarnType[]>([]);
@@ -47,13 +48,11 @@ const YarnPage = () => {
       {stash?.length > 0 ? (
         <section>
           <div className="flex justify-between">
-            <button
+            <Button
               onClick={() => router.push("/yarn/new")}
-              className="px-4 py-2 bg-blue-500 text-white disabled:bg-gray-400"
-              aria-label="Add new yarn"
-            >
-              Add New Yarn
-            </button>
+              ariaLabel="Add new yarn"
+              text="Add New Yarn"
+            />
             <ExportYarn yarnList={stash} />
           </div>
           <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 mt-6">
@@ -65,13 +64,11 @@ const YarnPage = () => {
       ) : (
         <>
           <p>Your yarn stash is empty :(.</p>
-          <button
+          <Button
             onClick={() => router.push("/yarn/new")}
-            className="px-4 py-2 bg-blue-500 text-white disabled:bg-gray-400"
-            aria-label="Add new yarn"
-          >
-            Add New Yarn
-          </button>
+            ariaLabel="Add new yarn"
+            text="Add New Yarn"
+          />
         </>
       )}
     </div>

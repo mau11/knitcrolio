@@ -6,6 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { yarnOptions, fields } from "@constants/yarn";
 import { yarnSchema, YarnSchemaType } from "@lib/schemas/yarnSchema";
+import { Button } from "@components/Button";
 
 const initialFormState: YarnSchemaType = {
   brand: "",
@@ -103,9 +104,17 @@ const YarnForm = () => {
   if (loading) return <p>Loading...</p>;
   if (pageError) return <p>{pageError}</p>;
 
+  const formButtonLabel = isSubmitting
+    ? queryObject.action === "edit"
+      ? "Updating..."
+      : "Adding..."
+    : queryObject.action === "edit"
+    ? "Update Yarn"
+    : "Add Yarn";
+
   return (
     <div className="py-4">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 pb-6">
         {fields.map((field) => (
           <div key={field.name} className="space-y-1">
             {field.name === "brand" ? (
@@ -184,27 +193,19 @@ const YarnForm = () => {
           className="block w-full border p-2"
         />
 
-        <button
+        <Button
           type="submit"
           disabled={isSubmitting}
-          className="px-4 py-2 bg-blue-500 text-white disabled:bg-gray-400"
-        >
-          {isSubmitting
-            ? queryObject.action === "edit"
-              ? "Updating..."
-              : "Adding..."
-            : queryObject.action === "edit"
-            ? "Update Yarn"
-            : "Add Yarn"}
-        </button>
+          ariaLabel={formButtonLabel}
+          text={formButtonLabel}
+        />
       </form>
-      <button
+      <Button
         disabled={isSubmitting}
-        className="px-4 py-2 mt-6 bg-blue-500 text-white disabled:bg-gray-400"
         onClick={() => router.push("/yarn")}
-      >
-        Return to Stash
-      </button>
+        ariaLabel="Return to Stash"
+        text="Return to Stash"
+      />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import { YarnWithoutId } from "@custom-types/yarn";
 import { Yarn } from "@prisma/index";
 import { exportListToCSV } from "@utils/export";
+import { Button } from "@components/Button";
 
 export const ExportYarn = ({ yarnList }: { yarnList: Yarn[] }) => {
   const handleExport = () => {
@@ -9,11 +10,10 @@ export const ExportYarn = ({ yarnList }: { yarnList: Yarn[] }) => {
   };
 
   return (
-    <button
+    <Button
+      text="Export as CSV"
       onClick={handleExport}
-      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-    >
-      Export as CSV
-    </button>
+      ariaLabel="Export yarn list as csv"
+    />
   );
 };
