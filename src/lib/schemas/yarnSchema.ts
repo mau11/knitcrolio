@@ -9,7 +9,13 @@ export const yarnSchema = z.object({
   material: z.string().min(1, "Material is required"),
   care: z.string().optional(),
   skeinWeight: z.string().optional(),
-  qty: z.number().min(0.5, "Minimum quantity is 0.5"),
+  qty: z.preprocess(
+    // Prevent default "Expected number, received nan" error when field is manually cleared
+    (val) => (typeof val === "number" && !isNaN(val) ? val : undefined),
+    z
+      .number({ required_error: "Quantity is required" })
+      .min(0.5, "Minimum quantity is 0.5")
+  ),
   notes: z.string().optional(),
   imageUrl: z.string().url("Must be a valid URL").optional().or(z.literal("")),
 });

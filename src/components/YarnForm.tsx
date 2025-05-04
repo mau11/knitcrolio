@@ -9,6 +9,7 @@ import { yarnSchema, YarnSchemaType } from "@lib/schemas/yarnSchema";
 import { Button } from "@components/Button";
 import DOMPurify from "dompurify";
 import { TextArea } from "@form/TextArea";
+import { Input } from "@form/Input";
 
 const initialFormState: YarnSchemaType = {
   brand: "",
@@ -192,36 +193,26 @@ const YarnForm = () => {
         <div className="flex flex-wrap gap-4">
           {/* Qty */}
           <div className="w-1/8 sm:w-1/12">
-            <label htmlFor="qty" className="block text-sm font-medium">
-              Quantity
-            </label>
-            <input
-              {...register("qty", { valueAsNumber: true })}
-              type="number"
-              step="0.5"
+            <Input
+              label="Qty"
+              fieldName="qty"
               placeholder="# of Skeins"
-              className="block w-full border p-2 mt-1"
+              inputType="number"
+              step="0.5"
+              register={register}
+              error={errors.qty?.message}
             />
-            {errors.qty && (
-              <p className="text-red-500 text-sm mt-1">{errors.qty.message}</p>
-            )}
           </div>
 
           {/* Color */}
           <div className="flex-1">
-            <label htmlFor="color" className="block text-sm font-medium">
-              Color
-            </label>
-            <input
-              {...register("color")}
+            <Input
+              label="Color"
+              fieldName="color"
               placeholder="Color"
-              className="block w-full border p-2 mt-1"
+              register={register}
+              error={errors.color?.message}
             />
-            {errors.color && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.color.message}
-              </p>
-            )}
           </div>
 
           {/* Color Family */}
@@ -281,53 +272,37 @@ const YarnForm = () => {
 
           {/* Skein Weight */}
           <div className="flex-1 w-2/5 sm:w-1/6">
-            <label htmlFor="skeinWeight" className="block text-sm font-medium">
-              Skein Weight
-            </label>
-            <input
-              {...register("skeinWeight")}
+            <Input
+              label="Size"
+              fieldName="skeinWeight"
               placeholder="Skein Weight"
-              className="block w-full border p-2 mt-1"
+              register={register}
+              error={errors.skeinWeight?.message}
             />
-            {errors.skeinWeight && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.skeinWeight.message}
-              </p>
-            )}
           </div>
 
           {/* Material */}
           <div className="w-full sm:w-1/2">
-            <label htmlFor="material" className="block text-sm font-medium">
-              Material
-            </label>
-            <input
-              {...register("material")}
-              placeholder="Material"
-              className="block w-full border p-2 mt-1"
+            <Input
+              label="Material"
+              fieldName="material"
+              placeholder="Fiber material"
+              register={register}
+              error={errors.material?.message}
             />
-            {errors.material && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.material.message}
-              </p>
-            )}
           </div>
         </div>
 
         <div className="flex flex-wrap gap-4">
           {/* Care */}
           <div className="flex-1">
-            <label htmlFor="care" className="block text-sm font-medium">
-              Care
-            </label>
-            <input
-              {...register("care")}
-              placeholder="Care instructions"
-              className="block w-full border p-2 mt-1"
+            <Input
+              label="Care"
+              fieldName="care"
+              placeholder="Care Instructions"
+              register={register}
+              error={errors.care?.message}
             />
-            {errors.care && (
-              <p className="text-red-500 text-sm mt-1">{errors.care.message}</p>
-            )}
           </div>
         </div>
 
@@ -344,19 +319,13 @@ const YarnForm = () => {
 
         {/* Image URL */}
         <div className="flex-1">
-          <label htmlFor="imageUrl" className="block text-sm font-medium">
-            Image URL
-          </label>
-          <input
-            {...register("imageUrl")}
+          <Input
+            label="Image URL"
+            fieldName="imageUrl"
             placeholder="https://www..."
-            className="block w-full border p-2 mt-1"
+            register={register}
+            error={errors.imageUrl?.message}
           />
-          {errors.imageUrl && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.imageUrl.message}
-            </p>
-          )}
         </div>
 
         <Button
