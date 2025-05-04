@@ -1,3 +1,4 @@
+import { yarnSchema } from "@lib/schemas/yarnSchema";
 import { PrismaClient, Yarn } from "@prisma/client";
 import { NextResponse } from "next/server";
 
@@ -10,10 +11,20 @@ export async function PUT(
   const { id } = await params;
   const data: Yarn = await request.json();
 
+  const result = yarnSchema.safeParse(data);
+
+  if (!result.success) {
+    return new Response(JSON.stringify({ error: result.error.flatten() }), {
+      status: 400,
+    });
+  }
+
+  const validData = result.data;
+
   try {
     await prisma.yarn.update({
       where: { id: Number(id) },
-      data,
+      data: validData,
     });
 
     return NextResponse.json(

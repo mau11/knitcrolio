@@ -1,3 +1,4 @@
+import { yarnSchema } from "@lib/schemas/yarnSchema";
 import { PrismaClient, Yarn } from "@prisma/client";
 import { NextResponse } from "next/server";
 
@@ -6,7 +7,19 @@ const prisma = new PrismaClient();
 export async function POST(request: Request) {
   try {
     const data: Yarn = await request.json();
-    const { brand, yarnType, color, colorFamily, weight, material, qty } = data;
+
+    const result = yarnSchema.safeParse(data);
+
+    if (!result.success) {
+      return new Response(JSON.stringify({ error: result.error.flatten() }), {
+        status: 400,
+      });
+    }
+
+    const validData = result.data;
+
+    const { brand, yarnType, color, colorFamily, weight, material, qty } =
+      validData;
     if (
       !brand ||
       !yarnType ||
@@ -25,7 +38,7 @@ export async function POST(request: Request) {
       );
     }
 
-    await prisma.yarn.create({ data });
+    await prisma.yarn.create({ data: validData });
     return NextResponse.json({
       message: "New yarn added successfully",
       status: "success",

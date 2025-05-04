@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { yarnOptions, fields } from "@constants/yarn";
 import { yarnSchema, YarnSchemaType } from "@lib/schemas/yarnSchema";
 import { Button } from "@components/Button";
+import DOMPurify from "dompurify";
 
 const initialFormState: YarnSchemaType = {
   brand: "",
@@ -44,6 +45,7 @@ const YarnForm = () => {
   const params = useSearchParams();
   const queryObject = Object.fromEntries(params.entries());
   const pathname = usePathname();
+  const sanitize = (input: string) => DOMPurify.sanitize(input);
 
   const onSubmit = async (rawData: YarnSchemaType) => {
     const parsed = yarnSchema.safeParse(rawData);
@@ -56,7 +58,15 @@ const YarnForm = () => {
       return;
     }
 
-    const data = parsed.data;
+    const data = {
+      ...parsed.data,
+      color: sanitize(parsed.data.color),
+      material: sanitize(parsed.data.material),
+      care: sanitize(parsed.data.care || ""),
+      skeinWeight: sanitize(parsed.data.skeinWeight || ""),
+      notes: sanitize(parsed.data.notes || ""),
+      imageUrl: sanitize(parsed.data.imageUrl || ""),
+    };
 
     try {
       if (queryObject.id && queryObject.action === "edit") {
