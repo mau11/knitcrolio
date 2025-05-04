@@ -18,6 +18,7 @@ const initialFormState: YarnFormFields = {
   skeinWeight: "",
   qty: 1,
   notes: "",
+  imageUrl: "",
 };
 
 const YarnForm = () => {
@@ -195,7 +196,13 @@ const YarnForm = () => {
           disabled={isSubmitting}
           className="px-4 py-2 bg-blue-500 text-white disabled:bg-gray-400"
         >
-          {isSubmitting ? "Adding..." : "Add Yarn"}
+          {isSubmitting
+            ? queryObject.action === "edit"
+              ? "Updating..."
+              : "Adding..."
+            : queryObject.action === "edit"
+            ? "Update Yarn"
+            : "Add Yarn"}
         </button>
       </form>
       <button

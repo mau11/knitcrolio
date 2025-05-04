@@ -80,6 +80,7 @@ const fields: Field[] = [
     required: false,
   },
   { name: "notes", placeholder: "Notes (optional)", required: false },
+  { name: "imageUrl", placeholder: "Image link (optional)", required: false },
 ];
 
 export { yarnOptions, fields };
