@@ -1,6 +1,6 @@
 "use client";
 
-import { addYarn, editYarn, getYarnById } from "@lib/api";
+import { addYarn, deleteYarn, editYarn, getYarnById } from "@lib/api";
 import { useForm } from "react-hook-form";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -47,6 +47,8 @@ const YarnForm = () => {
   const queryObject = Object.fromEntries(params.entries());
   const pathname = usePathname();
   const sanitize = (input: string) => DOMPurify.sanitize(input);
+  const { action, id } = queryObject;
+  const isEdit = action === "edit";
 
   const onSubmit = async (rawData: YarnSchemaType) => {
     const parsed = yarnSchema.safeParse(rawData);
@@ -70,8 +72,8 @@ const YarnForm = () => {
     };
 
     try {
-      if (queryObject.id && queryObject.action === "edit") {
-        await editYarn(data, Number(queryObject.id));
+      if (id && isEdit) {
+        await editYarn(data, Number(id));
       } else {
         await addYarn(data);
       }
@@ -97,8 +99,8 @@ const YarnForm = () => {
         setLoading(false);
       }
     };
-    if (queryObject.id && queryObject.action) {
-      fetchYarn(Number(queryObject.id));
+    if (id && queryObject.action) {
+      fetchYarn(Number(id));
     } else {
       setLoading(false);
     }
@@ -116,10 +118,10 @@ const YarnForm = () => {
   if (pageError) return <p>{pageError}</p>;
 
   const formButtonLabel = isSubmitting
-    ? queryObject.action === "edit"
+    ? isEdit
       ? "Updating..."
       : "Adding..."
-    : queryObject.action === "edit"
+    : isEdit
     ? "Update Yarn"
     : "Add Yarn";
 
@@ -128,6 +130,21 @@ const YarnForm = () => {
     setSelectedBrand(brand);
     setValue("brand", brand);
     setValue("yarnType", "");
+  };
+
+  const handleDelete = async () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete your yarn?"
+    );
+    if (confirmed) {
+      try {
+        await deleteYarn(Number(id));
+        router.push("/yarn");
+      } catch (err) {
+        console.error("Error deleting yarn:", err);
+        alert("Something went wrong while deleting.");
+      }
+    }
   };
 
   return (
@@ -281,20 +298,31 @@ const YarnForm = () => {
           </div>
         </div>
 
-        <div className="mt-6">
+        <div className="mt-6 flex justify-between">
           <Button
             type="submit"
             disabled={isSubmitting}
             ariaLabel={formButtonLabel}
             text={formButtonLabel}
           />
+          {isEdit && (
+            <Button
+              btnClass="delete"
+              disabled={isSubmitting}
+              onClick={handleDelete}
+              ariaLabel="Delete Yarn"
+              text="Delete Yarn"
+            />
+          )}
         </div>
       </form>
       <Button
+        btnClass="secondary"
         disabled={isSubmitting}
         onClick={() => router.push("/yarn")}
         ariaLabel="Cancel"
-        text={"Cancel"}
+        text="Cancel"
+        title="Return to Stash"
       />
     </div>
   );

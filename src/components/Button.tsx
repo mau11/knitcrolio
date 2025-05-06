@@ -1,6 +1,12 @@
 import { ButtonHTMLAttributes } from "react";
 
-type ButtonVariant = "primary" | "blueLink" | "greenLink" | "redLink";
+type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "delete"
+  | "blueLink"
+  | "greenLink"
+  | "redLink";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   btnClass?: ButtonVariant;
@@ -26,6 +32,8 @@ export const Button = ({
 
   const styles: Record<ButtonVariant, string> = {
     primary: "px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600",
+    secondary: "px-4 py-2 rounded bg-gray-500 text-white hover:bg-gray-600",
+    delete: "px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700",
     blueLink: `${linkClass} text-blue-500 hover:text-blue-900 `,
     greenLink: `${linkClass} text-green-600 hover:text-green-900 `,
     redLink: `${linkClass} text-red-600 hover:text-red-800`,
