@@ -19,7 +19,7 @@ export const TextArea = ({
     <div className="relative mt-8">
       <label
         htmlFor={fieldName}
-        className="absolute -top-3 left-1/2 -translate-x-1/2 px-1 bg-background text-gray-700 block text-sm font-medium"
+        className="absolute -top-3 left-1/2 -translate-x-1/2 px-1 bg-background text-gray-700 block text-sm font-medium w-max"
       >
         {label}
       </label>

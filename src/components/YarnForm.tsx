@@ -8,8 +8,7 @@ import { brands, colorFamilies, weights, yarnOptions } from "@constants/yarn";
 import { yarnSchema, YarnSchemaType } from "@lib/schemas/yarnSchema";
 import { Button } from "@components/Button";
 import DOMPurify from "dompurify";
-import { TextArea } from "@form/TextArea";
-import { Input } from "@form/Input";
+import { Input, TextArea, Select } from "@form/index";
 
 const initialFormState: YarnSchemaType = {
   brand: "",
@@ -132,61 +131,38 @@ const YarnForm = () => {
   };
 
   return (
-    <div className="py-4">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 pb-6">
+    <div className="pb-4">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-2 pb-6 flex-col gap-4"
+      >
         <div className="flex flex-wrap gap-4">
           {/* Brand */}
           <div className="flex-1">
-            <label htmlFor="brand" className="block text-sm font-medium">
-              Brand
-            </label>
-            <select
-              {...register("brand")}
-              onChange={handleBrandChange}
+            <Select
+              fieldName="brand"
+              label="Brand"
+              options={brands}
+              placeholder="Select Brand"
+              register={register}
               value={selectedBrand}
-              className="block w-full border p-2 mt-1"
-            >
-              <option value="" disabled>
-                Select Brand
-              </option>
-              {brands.map((option, index) => (
-                <option key={index} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            {errors.brand && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.brand.message}
-              </p>
-            )}
+              error={errors.brand?.message}
+              onChange={handleBrandChange}
+            />
           </div>
 
           {/* Brand Yarn Type */}
           <div className="flex-1">
-            <label htmlFor="yarnType" className="block text-sm font-medium">
-              Yarn Type
-            </label>
-            <select
-              {...register("yarnType")}
-              disabled={!selectedBrand}
+            <Select
+              fieldName="yarnType"
+              label="Select Yarn Type"
+              options={yarnTypes}
+              placeholder="Select Type"
+              register={register}
               value={watch("yarnType")}
-              className="block w-full border p-2 mt-1"
-            >
-              <option value="" disabled>
-                Select Yarn Type
-              </option>
-              {yarnTypes.map((yarnType, index) => (
-                <option key={index} value={yarnType}>
-                  {yarnType}
-                </option>
-              ))}
-            </select>
-            {errors.yarnType && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.yarnType.message}
-              </p>
-            )}
+              error={errors.yarnType?.message}
+              disabled={!selectedBrand}
+            />
           </div>
         </div>
 
@@ -217,72 +193,45 @@ const YarnForm = () => {
 
           {/* Color Family */}
           <div className="flex-1">
-            <label htmlFor="colorFamily" className="block text-sm font-medium">
-              Color Family
-            </label>
-            <select
-              {...register("colorFamily")}
-              className="block w-full border p-2 mt-1"
+            <Select
+              fieldName="colorFamily"
+              label="Color Family"
+              options={colorFamilies}
+              placeholder="Select Color"
+              register={register}
               value={watch("colorFamily")}
-            >
-              <option value="" disabled>
-                Color Family
-              </option>
-              {colorFamilies.map((option, index) => (
-                <option key={index} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            {errors.colorFamily && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.colorFamily.message}
-              </p>
-            )}
+              error={errors.colorFamily?.message}
+            />
           </div>
         </div>
 
         <div className="flex flex-wrap gap-4">
           {/* Yarn Weight */}
           <div className="w-2/5 sm:w-1/4">
-            <label htmlFor="weight" className="block text-sm font-medium">
-              Yarn Weight
-            </label>
-
-            <select
-              {...register("weight")}
-              className="block w-full border p-2 mt-1"
+            <Select
+              fieldName="weight"
+              label="Yarn Weight"
+              options={weights}
+              placeholder="Select Weight"
+              register={register}
               value={watch("weight")}
-            >
-              <option value="" disabled>
-                Yarn Weight
-              </option>
-              {weights.map((option, index) => (
-                <option key={index} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            {errors.weight && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.weight.message}
-              </p>
-            )}
+              error={errors.weight?.message}
+            />
           </div>
 
           {/* Skein Weight */}
           <div className="flex-1 w-2/5 sm:w-1/6">
             <Input
-              label="Size"
+              label="Skein Size"
               fieldName="skeinWeight"
-              placeholder="Skein Weight"
+              placeholder="10.5 oz"
               register={register}
               error={errors.skeinWeight?.message}
             />
           </div>
 
           {/* Material */}
-          <div className="w-full sm:w-1/2">
+          <div className="w-full sm:w-1/2 -mt-2 sm:mt-0">
             <Input
               label="Material"
               fieldName="material"
@@ -293,13 +242,13 @@ const YarnForm = () => {
           </div>
         </div>
 
+        {/* Care */}
         <div className="flex flex-wrap gap-4">
-          {/* Care */}
           <div className="flex-1">
             <Input
               label="Care"
               fieldName="care"
-              placeholder="Care Instructions"
+              placeholder="Care instructions"
               register={register}
               error={errors.care?.message}
             />
@@ -307,33 +256,39 @@ const YarnForm = () => {
         </div>
 
         {/* Notes section */}
-        <div className="w-full">
-          <TextArea
-            label="Notes"
-            fieldName="notes"
-            placeholder="lot #, storage location, etc"
-            register={register}
-            error={errors.notes?.message}
-          />
+        <div className="flex flex-wrap gap-4">
+          <div className="w-full">
+            <TextArea
+              label="Notes"
+              fieldName="notes"
+              placeholder="lot #, storage location, etc"
+              register={register}
+              error={errors.notes?.message}
+            />
+          </div>
         </div>
 
         {/* Image URL */}
-        <div className="flex-1">
-          <Input
-            label="Image URL"
-            fieldName="imageUrl"
-            placeholder="https://www..."
-            register={register}
-            error={errors.imageUrl?.message}
-          />
+        <div className="flex flex-wrap gap-4">
+          <div className="flex-1">
+            <Input
+              label="Image URL"
+              fieldName="imageUrl"
+              placeholder="https://www..."
+              register={register}
+              error={errors.imageUrl?.message}
+            />
+          </div>
         </div>
 
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          ariaLabel={formButtonLabel}
-          text={formButtonLabel}
-        />
+        <div className="mt-6">
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            ariaLabel={formButtonLabel}
+            text={formButtonLabel}
+          />
+        </div>
       </form>
       <Button
         disabled={isSubmitting}

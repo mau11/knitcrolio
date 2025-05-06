@@ -21,10 +21,10 @@ export const Input = ({
 }: InputProps) => {
   return (
     <>
-      <div className="relative mt-6">
+      <div className="relative mt-8">
         <label
           htmlFor={fieldName}
-          className="absolute -top-3 left-1/2 -translate-x-1/2 px-1 bg-background text-gray-700 block text-sm font-medium"
+          className="absolute -top-3 left-1/2 -translate-x-1/2 px-1 bg-background text-gray-700 block text-sm font-medium w-max"
         >
           {label}
         </label>
@@ -33,6 +33,7 @@ export const Input = ({
             valueAsNumber: inputType === "number",
           })}
           type={inputType}
+          min={0}
           step={step}
           placeholder={placeholder}
           className={`block w-full border rounded-sm p-2 ${
@@ -44,4 +45,3 @@ export const Input = ({
     </>
   );
 };
-// 378

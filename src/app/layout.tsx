@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${leckerli.variable} ${nunito.variable} max-w-[90vw] mx-auto overflow-x-hidden`}
+        className={`${leckerli.variable} ${nunito.variable} max-w-[90vw] lg:max-w-[70vw] mx-auto overflow-x-hidden`}
       >
         <Navbar />
         <main>{children}</main>
