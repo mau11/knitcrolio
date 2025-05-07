@@ -14,9 +14,45 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Craft {
+  KNIT
+  CROCHET
+}
+
+enum Size {
+  BABY
+  TODDLER
+  ADULT
+  CUSTOM
+}
+
+enum Category {
+  BABY_HEADWEAR
+  BABY_FOOTWEAR
+  BABY_BLANKET
+  BABY_PLUSH
+  ADULT_HAT
+  ADULT_SCARF
+  MISC
+}
+
+enum ShippingTier {
+  SMALL
+  MEDIUM
+  LARGE
+}
+
+enum InventoryStatus {
+  AVAILABLE
+  GIFTED
+  IN_STORE
+  SOLD
+  ARCHIVED
+}
+
 // The Yarn model defines the structure of the yarn data in the database.
 model Yarn {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   brand       String
   yarnType    String // The brand's specific type or variety yarn.
   color       String // The brand's name of the color of the yarn.
@@ -25,7 +61,46 @@ model Yarn {
   material    String // The material the yarn is made from (e.g., acrylic, polyester).
   care        String? // Optional: Care instructions for the yarn
   skeinWeight String? // Optional: The weight of the skein (e.g., 10.5 oz)
-  qty         Float // Number of skeins for this particular type of yarn
+  qty         Float    @default(1) // Number of skeins for this particular type of yarn
   notes       String?
   imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+
+  usedIn YarnOnInventory[] // All inventory items this yarn is used in
+}
+
+// The Inventory model defines the structure of the inventory data in the database.
+model Inventory {
+  id           Int               @id @default(autoincrement())
+  name         String
+  craft        Craft
+  category     Category // Category of item
+  size         Size
+  value        Decimal           @db.Decimal(10, 2) // Cost to make (will be used to calculate profits)
+  price        Decimal           @db.Decimal(10, 2) // Selling price
+  qty          Float             @default(1) // Number of the same item
+  recipient    String? // Optional: Recipient name for gifts or customer name
+  notes        String?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @default(now()) @updatedAt
+  status       InventoryStatus?  @default(AVAILABLE)
+  yarnUsed     YarnOnInventory[] // List of yarn used to create this product
+  shippingTier ShippingTier? // Optional: Shipping tier, used for calculating shipping costs
+
+  @@index([status]) // Index for filtering by status
+  @@index([category]) // Index for filtering by category
+  @@index([size]) // Index for filtering by size
+}
+
+// The YarnOnInventory model defines the join table between Yarn and Inventory.
+model YarnOnInventory {
+  id          Int       @id @default(autoincrement())
+  inventory   Inventory @relation(fields: [inventoryId], references: [id])
+  inventoryId Int
+  yarn        Yarn      @relation(fields: [yarnId], references: [id])
+  yarnId      Int
+  amountUsed  Float? // optional: how much of the yarn was used
+
+  @@unique([inventoryId, yarnId])
 }
