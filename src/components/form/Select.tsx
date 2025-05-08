@@ -1,10 +1,15 @@
 import { ChangeEvent } from "react";
 import { UseFormRegister } from "react-hook-form";
 
+interface SelectOption {
+  value: string;
+  label: string;
+}
+
 interface SelectProps {
   fieldName: string;
   label: string;
-  options: string[];
+  options: string[] | SelectOption[]; // Supports array of strings and enum maps
   placeholder: string;
   register: UseFormRegister<any>;
   value: string;
@@ -24,6 +29,21 @@ export const Select = ({
   disabled = false,
   onChange,
 }: SelectProps) => {
+  const isStringArray = typeof options[0] === "string";
+
+  const renderOptions = () => {
+    return isStringArray
+      ? (options as string[]).map((opt, index) => (
+          <option key={index} value={opt}>
+            {opt}
+          </option>
+        ))
+      : (options as SelectOption[]).map(({ value, label }, index) => (
+          <option key={index} value={value}>
+            {label}
+          </option>
+        ));
+  };
   const renderSelect = () => {
     if (onChange) {
       return (
@@ -39,11 +59,7 @@ export const Select = ({
           <option value="" disabled>
             {placeholder}
           </option>
-          {options.map((option, index) => (
-            <option key={index} value={option}>
-              {option}
-            </option>
-          ))}
+          {renderOptions()}
         </select>
       );
     } else {
@@ -59,11 +75,7 @@ export const Select = ({
           <option value="" disabled>
             {placeholder}
           </option>
-          {options.map((option, index) => (
-            <option key={index} value={option}>
-              {option}
-            </option>
-          ))}
+          {renderOptions()}
         </select>
       );
     }
