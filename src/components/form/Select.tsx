@@ -12,7 +12,7 @@ interface SelectProps {
   options: string[] | SelectOption[]; // Supports array of strings and enum maps
   placeholder: string;
   register: UseFormRegister<any>;
-  value: string;
+  value?: string;
   error?: string;
   disabled?: boolean;
   onChange?: (e: ChangeEvent<HTMLSelectElement>) => void;

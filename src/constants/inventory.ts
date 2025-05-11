@@ -1,16 +1,10 @@
-import {
-  Craft,
-  Size,
-  Category,
-  ShippingTier,
-  InventoryStatus,
-} from "@prisma/client";
+import { Craft, Size, Category, InventoryStatus } from "@prisma/client";
 
 type LabeledEnum<T> = { value: T; label: string };
 
 export const craftOptions: LabeledEnum<Craft>[] = [
-  { value: "KNIT", label: "Knit" },
   { value: "CROCHET", label: "Crochet" },
+  { value: "KNIT", label: "Knit" },
 ];
 
 export const sizeOptions: LabeledEnum<Size>[] = [
@@ -30,16 +24,16 @@ export const categoryOptions: LabeledEnum<Category>[] = [
   { value: "MISC", label: "Miscellaneous" },
 ];
 
-export const shippingTierOptions: LabeledEnum<ShippingTier>[] = [
-  { value: "SMALL", label: "Small" },
-  { value: "MEDIUM", label: "Medium" },
-  { value: "LARGE", label: "Large" },
-];
-
 export const inventoryStatusOptions: LabeledEnum<InventoryStatus>[] = [
   { value: "AVAILABLE", label: "Available" },
   { value: "GIFTED", label: "Gifted" },
   { value: "IN_STORE", label: "In Store" },
   { value: "SOLD", label: "Sold" },
   { value: "ARCHIVED", label: "Archived" },
+];
+
+export const shippingTierOptions = [
+  { value: "SMALL", label: "Small" },
+  { value: "MEDIUM", label: "Medium" },
+  { value: "LARGE", label: "Large" },
 ];

@@ -6,6 +6,7 @@ interface TextAreaProps {
   placeholder: string;
   error: string | undefined;
   register: UseFormRegister<any>;
+  rows?: number;
 }
 
 export const TextArea = ({
@@ -14,6 +15,7 @@ export const TextArea = ({
   placeholder,
   error,
   register,
+  rows = 2,
 }: TextAreaProps) => {
   return (
     <div className="relative mt-8">
@@ -25,6 +27,7 @@ export const TextArea = ({
       </label>
       <textarea
         {...register(fieldName)}
+        rows={rows}
         placeholder={placeholder}
         className={`block w-full border rounded-sm p-2 mt-1 ${
           error ? "border-red-500" : "border-gray-400"

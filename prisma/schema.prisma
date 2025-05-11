@@ -36,12 +36,6 @@ enum Category {
   MISC
 }
 
-enum ShippingTier {
-  SMALL
-  MEDIUM
-  LARGE
-}
-
 enum InventoryStatus {
   AVAILABLE
   GIFTED
@@ -86,7 +80,7 @@ model Inventory {
   updatedAt    DateTime          @default(now()) @updatedAt
   status       InventoryStatus?  @default(AVAILABLE)
   yarnUsed     YarnOnInventory[] // List of yarn used to create this product
-  shippingTier ShippingTier? // Optional: Shipping tier, used for calculating shipping costs
+  shippingTier String? // Optional: Shipping tier, used for calculating shipping costs
 
   @@index([status]) // Index for filtering by status
   @@index([category]) // Index for filtering by category

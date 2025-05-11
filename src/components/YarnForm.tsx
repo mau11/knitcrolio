@@ -134,7 +134,7 @@ const YarnForm = () => {
 
   const handleDelete = async () => {
     const confirmed = window.confirm(
-      "Are you sure you want to delete your yarn?"
+      "Are you sure you want to delete this yarn?"
     );
     if (confirmed) {
       try {

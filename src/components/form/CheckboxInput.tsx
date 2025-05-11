@@ -30,7 +30,7 @@ export const CheckboxInput = ({
         {label}
       </label>
       <div
-        className={`max-h-56 overflow-y-auto border rounded-sm p-3 space-y-2 ${
+        className={`max-h-40.5 overflow-y-auto border rounded-sm p-3 space-y-2 ${
           error ? "border-red-500" : "border-gray-400"
         }`}
       >
