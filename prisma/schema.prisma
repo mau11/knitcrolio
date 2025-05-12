@@ -61,7 +61,7 @@ model Inventory {
   notes        String?
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @default(now()) @updatedAt
-  status       InventoryStatus?  @default(AVAILABLE)
+  status       InventoryStatus   @default(AVAILABLE)
   yarnUsed     YarnOnInventory[] // List of yarn used to create this product
   shippingTier String? // Optional: Shipping tier, used for calculating shipping costs
 
