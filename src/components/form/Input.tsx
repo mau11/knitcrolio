@@ -4,20 +4,22 @@ interface InputProps {
   label: string;
   fieldName: string;
   inputType?: "number" | "text";
-  step?: string;
+  step?: number;
   placeholder: string;
   error: string | undefined;
   register: UseFormRegister<any>;
+  min?: number;
 }
 
 export const Input = ({
   label,
   fieldName,
   inputType = "text",
-  step,
+  step = 1,
   placeholder,
   error,
   register,
+  min = 0,
 }: InputProps) => {
   return (
     <>
@@ -33,7 +35,7 @@ export const Input = ({
             valueAsNumber: inputType === "number",
           })}
           type={inputType}
-          min={0}
+          min={min}
           step={step}
           placeholder={placeholder}
           className={`block w-full border rounded-sm p-2 ${

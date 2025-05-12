@@ -191,7 +191,7 @@ const YarnForm = () => {
               fieldName="qty"
               placeholder="# of Skeins"
               inputType="number"
-              step="0.5"
+              step={0.5}
               register={register}
               error={errors.qty?.message}
             />
