@@ -19,23 +19,6 @@ enum Craft {
   CROCHET
 }
 
-enum Size {
-  BABY
-  TODDLER
-  ADULT
-  CUSTOM
-}
-
-enum Category {
-  BABY_HEADWEAR
-  BABY_FOOTWEAR
-  BABY_BLANKET
-  BABY_PLUSH
-  ADULT_HAT
-  ADULT_SCARF
-  MISC
-}
-
 enum InventoryStatus {
   AVAILABLE
   GIFTED
@@ -69,8 +52,8 @@ model Inventory {
   id           Int               @id @default(autoincrement())
   name         String
   craft        Craft
-  category     Category // Category of item
-  size         Size
+  category     String // Category of item
+  size         String
   value        Decimal           @db.Decimal(10, 2) // Cost to make (will be used to calculate profits)
   price        Decimal           @db.Decimal(10, 2) // Selling price
   qty          Float             @default(1) // Number of the same item
