@@ -33,6 +33,8 @@ const initialFormState: InventorySchemaType = {
   size: "",
   qty: 1,
   yarnUsed: [],
+  variant: "",
+  sku: "",
   notes: "",
   status: InventoryStatus.AVAILABLE,
   recipient: "",
@@ -196,6 +198,29 @@ const InventoryForm = () => {
               error={errors.size?.message}
             />
           </div>
+          {/* Variant Name */}
+          <div className="flex-1">
+            <Input
+              label="Variant Name*"
+              fieldName="variant"
+              placeholder="Variant name"
+              register={register}
+              error={errors.variant?.message}
+            />
+          </div>
+          {/* SKU */}
+          <div className="w-1/6 sm:w-1/8">
+            <Input
+              label="SKU"
+              fieldName="sku"
+              placeholder="0001"
+              register={register}
+              error={errors.sku?.message}
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-4">
           {/* Item Name */}
           <div className="flex-1">
             <Input

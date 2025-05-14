@@ -10,7 +10,7 @@ type ProductCardProps = {
 };
 
 const ProductCard = ({ product, onDelete }: ProductCardProps) => {
-  const { name, qty, id } = product;
+  const { name, variant, qty, id, size } = product;
 
   const router = useRouter();
   const pathname = usePathname();
@@ -36,10 +36,15 @@ const ProductCard = ({ product, onDelete }: ProductCardProps) => {
   };
 
   return (
-    <div className="rounded-2xl bg-white shadow-md md:p-6 p-4 hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between">
-      <h2 className="mb-2">{name}</h2>
+    <div className="rounded-2xl bg-white shadow-md md:p-6 p-4 hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between gap-2">
       <div className="flex justify-between">
         <div className="text-gray-700 space-y-1 text-sm">
+          <p>
+            <span className="font-semibold">Variant:</span> {variant}
+          </p>
+          <p>
+            <span className="font-semibold">Size:</span> {size}
+          </p>
           <p>
             <span className="font-semibold">Quantity:</span> {qty}
           </p>

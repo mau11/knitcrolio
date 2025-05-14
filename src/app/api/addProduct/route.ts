@@ -31,6 +31,8 @@ export async function POST(request: Request) {
       recipient,
       shippingTier,
       yarnUsed,
+      variant,
+      sku,
     } = validData;
 
     const newInventoryData = {
@@ -45,6 +47,8 @@ export async function POST(request: Request) {
       value,
       price,
       shippingTier,
+      variant,
+      sku,
     };
 
     await prisma.$transaction(async (tx) => {

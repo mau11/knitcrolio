@@ -28,6 +28,14 @@ const InventoryPage = () => {
     fetchInventory();
   }, []);
 
+  const groupedInventory = inventory.reduce((acc, item) => {
+    if (!acc[item.name]) {
+      acc[item.name] = [];
+    }
+    acc[item.name].push(item);
+    return acc;
+  }, {} as Record<string, InventoryType[]>);
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -53,13 +61,20 @@ const InventoryPage = () => {
               text="Add New Products"
             />
           </div>
-          <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 mt-6">
-            {inventory.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onDelete={handleDelete}
-              />
+          <div className="grid grid-cols-1 gap-4 mt-6">
+            {Object.entries(groupedInventory).map(([productName, items]) => (
+              <div key={productName} className="mb-8">
+                <h2 className="text-xl font-semibold mb-3">{productName}</h2>
+                <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
+                  {items.map((variant) => (
+                    <ProductCard
+                      key={variant.id}
+                      product={variant}
+                      onDelete={handleDelete}
+                    />
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </section>
