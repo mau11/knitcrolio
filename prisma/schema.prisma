@@ -59,6 +59,8 @@ model Inventory {
   qty          Float             @default(1) // Number of the same item
   recipient    String? // Optional: Recipient name for gifts or customer name
   notes        String?
+  variant      String // This is the variant name for store listing, (a blue and white item may be called "Sky" for this field)
+  sku          String?
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @default(now()) @updatedAt
   status       InventoryStatus   @default(AVAILABLE)
