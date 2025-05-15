@@ -79,7 +79,6 @@ model YarnOnInventory {
   inventoryId Int
   yarn        Yarn      @relation(fields: [yarnId], references: [id], onDelete: Cascade)
   yarnId      Int
-  amountUsed  Float? // optional: how much of the yarn was used
 
   @@unique([inventoryId, yarnId])
 }
