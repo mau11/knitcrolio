@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   InventorySchemaType,
@@ -23,7 +23,7 @@ import {
   shippingTierOptions,
   sizeOptions,
 } from "@constants/inventory";
-import { addProduct, getYarn } from "@lib/api";
+import { addProduct, editProduct, getProductById, getYarn } from "@lib/api";
 import { Craft, InventoryStatus, Yarn } from "@prisma/client";
 
 const initialFormState: InventorySchemaType = {
@@ -60,8 +60,12 @@ const InventoryForm = () => {
   const [yarnList, setYarnList] = useState<Yarn[]>([]);
 
   const router = useRouter();
+  const params = useSearchParams();
+  const queryObject = Object.fromEntries(params.entries());
   const pathname = usePathname();
   const sanitize = (input: string) => DOMPurify.sanitize(input);
+  const { action, id } = queryObject;
+  const isEdit = action === "edit";
 
   const onSubmit = async (rawData: InventorySchemaType) => {
     const parsed = inventorySchema.safeParse(rawData);
@@ -81,7 +85,11 @@ const InventoryForm = () => {
     };
 
     try {
-      await addProduct(data);
+      if (id && isEdit) {
+        await editProduct(data, Number(id));
+      } else {
+        await addProduct(data);
+      }
       router.replace(pathname);
       reset(initialFormState);
     } catch (err) {
@@ -104,10 +112,52 @@ const InventoryForm = () => {
     fetchYarnList();
   }, []);
 
+  useEffect(() => {
+    const fetchProduct = async (paramId: number) => {
+      try {
+        const response = await getProductById(paramId);
+
+        // Extract yarn IDs from the yarnUsed relation
+        const selectedYarnIds: string[] = Array.isArray(response.yarnUsed)
+          ? response.yarnUsed.map((yarnOnInventory: { yarnId: number }) =>
+              String(yarnOnInventory.yarnId)
+            )
+          : [];
+
+        const cleanedData: InventorySchemaType = {
+          ...initialFormState,
+          ...response,
+          value: parseFloat(response.value),
+          price: parseFloat(response.price),
+          sku: response.sku ?? "",
+          yarnUsed: selectedYarnIds,
+        };
+
+        reset(cleanedData);
+      } catch (err) {
+        console.error("Failed to load product", err);
+        setPageError("Failed to load product");
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (id && queryObject.action) {
+      fetchProduct(Number(id));
+    } else {
+      setLoading(false);
+    }
+  }, [params]);
+
   if (loading) return <p>Loading...</p>;
   if (pageError) return <p>{pageError}</p>;
 
-  const formButtonLabel = isSubmitting ? "Adding..." : "Add Product";
+  const formButtonLabel = isSubmitting
+    ? isEdit
+      ? "Updating..."
+      : "Adding..."
+    : isEdit
+    ? "Update Product"
+    : "Add Product";
 
   const yarnOptions = yarnList.map((yarn: Yarn) => ({
     value: String(yarn.id),

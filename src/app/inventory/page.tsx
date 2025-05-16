@@ -57,8 +57,8 @@ const InventoryPage = () => {
           <div className="flex justify-between">
             <Button
               onClick={() => router.push("/inventory/new")}
-              ariaLabel="Add new products"
-              text="Add New Products"
+              ariaLabel="Add new product"
+              text="Add New Product"
             />
           </div>
           <div className="grid grid-cols-1 gap-4 mt-6">
@@ -83,8 +83,8 @@ const InventoryPage = () => {
           <p>Your inventory is empty :(.</p>
           <Button
             onClick={() => router.push("/inventory/new")}
-            ariaLabel="Add new products"
-            text="Add New Products"
+            ariaLabel="Add new product"
+            text="Add New Product"
           />
         </>
       )}

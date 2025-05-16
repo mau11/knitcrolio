@@ -12,6 +12,13 @@ export async function GET(
 
     const inventory = await prisma.inventory.findUnique({
       where: { id: Number(id) },
+      include: {
+        yarnUsed: {
+          select: {
+            yarnId: true,
+          },
+        },
+      },
     });
     return NextResponse.json(inventory);
   } catch (error) {

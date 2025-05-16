@@ -15,7 +15,7 @@ export const inventorySchema = z.object({
       .number({ required_error: "Quantity is required" })
       .min(0.5, "Minimum quantity is 0.5")
   ),
-  yarnUsed: z.array(z.string()),
+  yarnUsed: z.array(z.string()).min(1, "Please select at least one yarn"),
   variant: z.string().min(1, "Variant is required"),
   sku: z.string().optional(),
   notes: z.string().optional(),
