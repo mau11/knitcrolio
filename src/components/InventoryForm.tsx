@@ -87,10 +87,11 @@ const InventoryForm = () => {
     try {
       if (id && isEdit) {
         await editProduct(data, Number(id));
+        router.push("/inventory");
       } else {
         await addProduct(data);
+        router.replace(pathname);
       }
-      router.replace(pathname);
       reset(initialFormState);
     } catch (err) {
       console.error("Error saving product:", err);

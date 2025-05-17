@@ -74,10 +74,11 @@ const YarnForm = () => {
     try {
       if (id && isEdit) {
         await editYarn(data, Number(id));
+        router.push("/yarn");
       } else {
         await addYarn(data);
+        router.replace(pathname);
       }
-      router.replace(pathname);
       setSelectedBrand("");
       reset(initialFormState);
     } catch (err) {
