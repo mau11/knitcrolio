@@ -53,7 +53,7 @@ const YarnPage = () => {
               ariaLabel="Add new yarn"
               text="Add New Yarn"
             />
-            <ExportYarn yarnList={stash} />
+            <ExportYarn list={stash} />
           </div>
           <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 mt-6">
             {stash.map((yarn) => (

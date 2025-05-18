@@ -3,10 +3,10 @@ import { Yarn } from "@prisma/index";
 import { exportListToCSV } from "@utils/export";
 import { Button } from "@components/Button";
 
-export const ExportYarn = ({ yarnList }: { yarnList: Yarn[] }) => {
+export const ExportYarn = ({ list }: { list: Yarn[] }) => {
   const handleExport = () => {
-    const yarnListToExport = yarnList.map(({ id, ...rest }) => rest);
-    exportListToCSV<YarnWithoutId>(yarnListToExport, "my_yarn_inventory");
+    const listToExport = list.map(({ id, ...rest }) => rest);
+    exportListToCSV<YarnWithoutId>(listToExport, "my_yarn_inventory");
   };
 
   return (

@@ -6,6 +6,7 @@ import { Button } from "@components/Button";
 import { useRouter } from "next/navigation";
 import { deleteProduct, getProduct } from "@lib/api";
 import ProductCard from "@components/ProductCard";
+import { ExportInventory } from "@components/ExportInventory";
 
 const InventoryPage = () => {
   const [inventory, setInventory] = useState<InventoryType[]>([]);
@@ -60,6 +61,7 @@ const InventoryPage = () => {
               ariaLabel="Add new product"
               text="Add New Product"
             />
+            <ExportInventory list={inventory} />
           </div>
           <div className="grid grid-cols-1 gap-4 mt-6">
             {Object.entries(groupedInventory).map(([productName, items]) => (
