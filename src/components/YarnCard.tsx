@@ -1,9 +1,10 @@
 "use client";
 
 import { Yarn } from "@prisma/client";
-import { usePathname, useRouter } from "next/navigation";
-import YarnImage from "./YarnImage";
-import { Button } from "@components/Button";
+import { useRouter } from "next/navigation";
+import YarnImage from "@components/YarnImage";
+import { MouseEvent, useCallback } from "react";
+import { Link } from "@components/Link";
 
 type YarnCardProps = {
   yarn: Yarn;
@@ -14,30 +15,45 @@ const YarnCard = ({ yarn, onDelete }: YarnCardProps) => {
   const { brand, yarnType, color, qty, id } = yarn;
 
   const router = useRouter();
-  const pathname = usePathname();
 
-  const handleClick = (action: "copy" | "edit") => {
-    // Navigate to YarnForm with pre-populated fields using query parameters
-    const query = new URLSearchParams({
-      id: id.toString(),
-      action,
-    }).toString();
+  const handleClick = useCallback(
+    (e: MouseEvent<HTMLAnchorElement>, action: "copy" | "edit") => {
+      e.stopPropagation();
 
-    action === "copy" && router.push(`${pathname}/new?${query}`);
-    action === "edit" && router.push(`${pathname}/edit?${query}`);
-  };
+      // Navigate to YarnForm with pre-populated fields using query parameters
+      const query = new URLSearchParams({
+        id: id.toString(),
+        action,
+      }).toString();
 
-  const handleDelete = () => {
-    const confirmed = window.confirm(
-      `Are you sure you want to delete your "${color} (${yarnType}) yarn"?`
-    );
-    if (confirmed) {
-      onDelete(id);
-    }
-  };
+      const basePath = "/yarn";
+
+      action === "copy" && router.push(`${basePath}/new?${query}`);
+      action === "edit" && router.push(`${basePath}/edit?${query}`);
+    },
+    [id, router]
+  );
+
+  const handleDelete = useCallback(
+    (e: MouseEvent<HTMLAnchorElement>) => {
+      e.stopPropagation();
+      const confirmed = window.confirm(
+        `Are you sure you want to delete your "${color} (${yarnType}) yarn"?`
+      );
+      if (confirmed) {
+        onDelete(id);
+      }
+    },
+    [color, yarnType, id, onDelete]
+  );
 
   return (
-    <div className="rounded-2xl bg-white shadow-md md:p-6 p-4 hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between">
+    <article
+      className="rounded-2xl bg-white shadow-md md:p-6 p-4 hover:shadow-xl transition-shadow duration-300 flex flex-col justify-between cursor-pointer"
+      onClick={() => {
+        router.push(`/yarn/${id}`);
+      }}
+    >
       <h2 className="mb-2">
         {brand} - {yarnType}
       </h2>
@@ -53,26 +69,26 @@ const YarnCard = ({ yarn, onDelete }: YarnCardProps) => {
         <YarnImage imageUrl={yarn.imageUrl} />
       </div>
       <div className="flex justify-between">
-        <Button
-          onClick={() => handleClick("copy")}
-          btnClass="blueLink"
+        <Link
+          onClick={(e) => handleClick(e, "copy")}
+          linkClass="blueLink"
           text="Copy"
           ariaLabel="Copy"
         />
-        <Button
-          onClick={() => handleClick("edit")}
-          btnClass="greenLink"
+        <Link
+          onClick={(e) => handleClick(e, "edit")}
+          linkClass="greenLink"
           text="Edit"
           ariaLabel="Edit"
         />
-        <Button
+        <Link
           onClick={handleDelete}
-          btnClass="redLink"
+          linkClass="redLink"
           text="Delete"
           ariaLabel="Delete"
         />
       </div>
-    </div>
+    </article>
   );
 };
 

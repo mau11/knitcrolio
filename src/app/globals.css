@@ -30,4 +30,7 @@
     padding: 0;
     margin: 0;
   }
+  button {
+    @apply text-left;
+  }
 }
