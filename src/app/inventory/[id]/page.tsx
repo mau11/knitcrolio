@@ -78,7 +78,7 @@ const ProductDetailPage = () => {
         {product.variant} {product.name}
       </h1>
 
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-6 mt-4">
         <Link
           onClick={() => router.push("/inventory")}
           linkClass="redLink"

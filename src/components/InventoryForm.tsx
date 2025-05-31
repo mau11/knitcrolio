@@ -25,6 +25,7 @@ import {
 } from "@constants/inventory";
 import { addProduct, editProduct, getProductById, getYarn } from "@lib/api";
 import { Craft, InventoryStatus, Yarn } from "@prisma/client";
+import { Link } from "@components/Link";
 
 const initialFormState: InventorySchemaType = {
   name: "",
@@ -357,16 +358,14 @@ const InventoryForm = () => {
             ariaLabel={formButtonLabel}
             text={formButtonLabel}
           />
+          <Link
+            onClick={() => router.push("/inventory")}
+            linkClass="redLink"
+            text="← Back to Inventory"
+            ariaLabel="Back to Inventory"
+          />
         </div>
       </form>
-      <Button
-        btnClass="secondary"
-        disabled={isSubmitting}
-        onClick={() => router.push("/inventory")}
-        ariaLabel="Cancel"
-        text="Cancel"
-        title="Return to Inventory"
-      />
     </div>
   );
 };

@@ -9,6 +9,7 @@ import { yarnSchema, YarnSchemaType } from "@lib/schemas/yarnSchema";
 import { Button } from "@components/Button";
 import DOMPurify from "dompurify";
 import { Input, TextArea, Select } from "@form/index";
+import { Link } from "@components/Link";
 
 const initialFormState: YarnSchemaType = {
   brand: "",
@@ -306,25 +307,14 @@ const YarnForm = () => {
             ariaLabel={formButtonLabel}
             text={formButtonLabel}
           />
-          {isEdit && (
-            <Button
-              btnClass="delete"
-              disabled={isSubmitting}
-              onClick={handleDelete}
-              ariaLabel="Delete Yarn"
-              text="Delete Yarn"
-            />
-          )}
+          <Link
+            onClick={() => router.push("/yarn")}
+            linkClass="redLink"
+            text="← Back to Stash"
+            ariaLabel="Back to Stash"
+          />
         </div>
       </form>
-      <Button
-        btnClass="secondary"
-        disabled={isSubmitting}
-        onClick={() => router.push("/yarn")}
-        ariaLabel="Cancel"
-        text="Cancel"
-        title="Return to Stash"
-      />
     </div>
   );
 };

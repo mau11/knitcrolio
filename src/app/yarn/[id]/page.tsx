@@ -70,7 +70,7 @@ const YarnDetailPage = () => {
     <section className="py-4 max-w-4xl mx-auto">
       <h1 className="mb-0">{yarn.color}</h1>
 
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-6 mt-4">
         <Link
           onClick={() => router.push("/yarn")}
           linkClass="redLink"

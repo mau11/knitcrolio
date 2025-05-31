@@ -7,6 +7,7 @@ interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   text: string;
   ariaLabel: string;
   disabled?: boolean;
+  className?: string;
 }
 
 export const Link = ({
@@ -14,11 +15,12 @@ export const Link = ({
   text,
   ariaLabel,
   disabled = false,
+  className = "",
   onClick,
   ...rest
 }: LinkProps) => {
   const baseClass =
-    "focus:outline-none transition-colors duration-200 cursor-pointer mt-4 inline-block text-sm hover:underline ";
+    "focus:outline-none transition-colors duration-200 cursor-pointer inline-block text-sm hover:underline ";
 
   const styles: Record<LinkVariant, string> = {
     blueLink: `${linkClass} text-blue-500 hover:text-blue-900 `,
@@ -38,12 +40,14 @@ export const Link = ({
     onClick?.(e);
   };
 
+  const classNames = `${className} ${baseClass} ${styles[linkClass]} ${disabledClasses}`;
+
   return (
     <a
       onClick={handleClick}
       aria-label={ariaLabel}
       aria-disabled={disabled}
-      className={`${baseClass} ${styles[linkClass]} ${disabledClasses}`}
+      className={classNames}
       {...rest}
     >
       {text}
