@@ -2,7 +2,8 @@
 
 import { Inventory } from "@prisma/client";
 import { usePathname, useRouter } from "next/navigation";
-import { Button } from "@components/Button";
+import { Link } from "@components/Link";
+import { useCallback } from "react";
 
 type ProductCardProps = {
   product: Inventory;
@@ -15,16 +16,19 @@ const ProductCard = ({ product, onDelete }: ProductCardProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleClick = (action: "copy" | "edit") => {
-    // Navigate to InventoryForm with pre-populated fields using query parameters
-    const query = new URLSearchParams({
-      id: id.toString(),
-      action,
-    }).toString();
+  const handleClick = useCallback(
+    (action: "copy" | "edit") => {
+      // Navigate to InventoryForm with pre-populated fields using query parameters
+      const query = new URLSearchParams({
+        id: id.toString(),
+        action,
+      }).toString();
 
-    action === "copy" && router.push(`${pathname}/new?${query}`);
-    action === "edit" && router.push(`${pathname}/edit?${query}`);
-  };
+      action === "copy" && router.push(`${pathname}/new?${query}`);
+      action === "edit" && router.push(`${pathname}/edit?${query}`);
+    },
+    [id, router]
+  );
 
   const handleDelete = () => {
     const confirmed = window.confirm(
@@ -36,12 +40,10 @@ const ProductCard = ({ product, onDelete }: ProductCardProps) => {
   };
 
   return (
-    <div className="rounded-2xl bg-white shadow-md md:p-6 p-4 hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between gap-2">
+    <article className="rounded-2xl bg-white shadow-md md:p-6 p-4 hover:shadow-xl transition-shadow duration-300 flex flex-col justify-between gap-2">
       <div className="flex justify-between">
         <div className="text-gray-700 space-y-1 text-sm">
-          <p>
-            <span className="font-semibold">Variant:</span> {variant}
-          </p>
+          <p className="font-semibold">{variant}</p>
           <p>
             <span className="font-semibold">Size:</span> {size}
           </p>
@@ -51,26 +53,26 @@ const ProductCard = ({ product, onDelete }: ProductCardProps) => {
         </div>
       </div>
       <div className="flex justify-between">
-        <Button
+        <Link
           onClick={() => handleClick("copy")}
-          btnClass="blueLink"
+          linkClass="blueLink"
           text="Copy"
           ariaLabel="Copy"
         />
-        <Button
+        <Link
           onClick={() => handleClick("edit")}
-          btnClass="greenLink"
+          linkClass="greenLink"
           text="Edit"
           ariaLabel="Edit"
         />
-        <Button
+        <Link
           onClick={handleDelete}
-          btnClass="redLink"
+          linkClass="redLink"
           text="Delete"
           ariaLabel="Delete"
         />
       </div>
-    </div>
+    </article>
   );
 };
 
