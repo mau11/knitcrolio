@@ -3,7 +3,7 @@
 import { Inventory } from "@prisma/client";
 import { usePathname, useRouter } from "next/navigation";
 import { Link } from "@components/Link";
-import { useCallback } from "react";
+import { MouseEvent, useCallback } from "react";
 
 type ProductCardProps = {
   product: Inventory;
@@ -17,7 +17,9 @@ const ProductCard = ({ product, onDelete }: ProductCardProps) => {
   const pathname = usePathname();
 
   const handleClick = useCallback(
-    (action: "copy" | "edit") => {
+    (e: MouseEvent<HTMLAnchorElement>, action: "copy" | "edit") => {
+      e.stopPropagation();
+
       // Navigate to InventoryForm with pre-populated fields using query parameters
       const query = new URLSearchParams({
         id: id.toString(),
@@ -30,7 +32,9 @@ const ProductCard = ({ product, onDelete }: ProductCardProps) => {
     [id, router]
   );
 
-  const handleDelete = () => {
+  const handleDelete = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.stopPropagation();
+
     const confirmed = window.confirm(
       `Are you sure you want to delete "${name}"?`
     );
@@ -40,7 +44,12 @@ const ProductCard = ({ product, onDelete }: ProductCardProps) => {
   };
 
   return (
-    <article className="rounded-2xl bg-white shadow-md md:p-6 p-4 hover:shadow-xl transition-shadow duration-300 flex flex-col justify-between gap-2">
+    <article
+      className="rounded-2xl bg-white shadow-md md:p-6 p-4 hover:shadow-xl transition-shadow duration-300 flex flex-col justify-between gap-2 cursor-pointer"
+      onClick={() => {
+        router.push(`/inventory/${id}`);
+      }}
+    >
       <div className="flex justify-between">
         <div className="text-gray-700 space-y-1 text-sm">
           <p className="font-semibold">{variant}</p>
@@ -54,13 +63,13 @@ const ProductCard = ({ product, onDelete }: ProductCardProps) => {
       </div>
       <div className="flex justify-between">
         <Link
-          onClick={() => handleClick("copy")}
+          onClick={(e) => handleClick(e, "copy")}
           linkClass="blueLink"
           text="Copy"
           ariaLabel="Copy"
         />
         <Link
-          onClick={() => handleClick("edit")}
+          onClick={(e) => handleClick(e, "edit")}
           linkClass="greenLink"
           text="Edit"
           ariaLabel="Edit"
