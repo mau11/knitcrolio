@@ -6,6 +6,7 @@ import { getYarnById, deleteYarn } from "@lib/api";
 import { Yarn } from "@prisma/client";
 import YarnImage from "@components/YarnImage";
 import { Link } from "@components/Link";
+import { DeleteIcon } from "@icons/DeleteIcon";
 
 const YarnDetailPage = () => {
   const [yarn, setYarn] = useState<Yarn | null>(null);
@@ -90,12 +91,9 @@ const YarnDetailPage = () => {
             text="Copy"
             ariaLabel="Copy Yarn"
           />
-          <Link
-            onClick={handleDelete}
-            linkClass="redLink"
-            text="Delete"
-            ariaLabel="Delete Yarn"
-          />
+          <button onClick={handleDelete} aria-label="Delete Yarn">
+            <DeleteIcon title="Delete Yarn" />
+          </button>
         </div>
       </div>
 

@@ -4,6 +4,7 @@ import { Inventory } from "@prisma/client";
 import { usePathname, useRouter } from "next/navigation";
 import { Link } from "@components/Link";
 import { MouseEvent, useCallback } from "react";
+import { DeleteIcon } from "@icons/DeleteIcon";
 
 type ProductCardProps = {
   product: Inventory;
@@ -32,7 +33,7 @@ const ProductCard = ({ product, onDelete }: ProductCardProps) => {
     [id, router]
   );
 
-  const handleDelete = (e: MouseEvent<HTMLAnchorElement>) => {
+  const handleDelete = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
     const confirmed = window.confirm(
@@ -74,12 +75,9 @@ const ProductCard = ({ product, onDelete }: ProductCardProps) => {
           text="Edit"
           ariaLabel="Edit"
         />
-        <Link
-          onClick={handleDelete}
-          linkClass="redLink"
-          text="Delete"
-          ariaLabel="Delete"
-        />
+        <button onClick={handleDelete} aria-label="Delete Yarn">
+          <DeleteIcon title="Delete Yarn" />
+        </button>
       </div>
     </article>
   );

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import YarnImage from "@components/YarnImage";
 import { MouseEvent, useCallback } from "react";
 import { Link } from "@components/Link";
+import { DeleteIcon } from "@icons/DeleteIcon";
 
 type YarnCardProps = {
   yarn: Yarn;
@@ -35,7 +36,7 @@ const YarnCard = ({ yarn, onDelete }: YarnCardProps) => {
   );
 
   const handleDelete = useCallback(
-    (e: MouseEvent<HTMLAnchorElement>) => {
+    (e: MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
       const confirmed = window.confirm(
         `Are you sure you want to delete your "${color} (${yarnType}) yarn"?`
@@ -81,12 +82,9 @@ const YarnCard = ({ yarn, onDelete }: YarnCardProps) => {
           text="Edit"
           ariaLabel="Edit"
         />
-        <Link
-          onClick={handleDelete}
-          linkClass="redLink"
-          text="Delete"
-          ariaLabel="Delete"
-        />
+        <button onClick={handleDelete} aria-label="Delete Yarn">
+          <DeleteIcon title="Delete Yarn" />
+        </button>
       </div>
     </article>
   );

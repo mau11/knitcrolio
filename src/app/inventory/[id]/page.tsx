@@ -6,6 +6,7 @@ import { deleteProduct, getProductById } from "@lib/api";
 import { Inventory } from "@prisma/client";
 import { Link } from "@components/Link";
 import { Decimal } from "@prisma/client/runtime/library";
+import { DeleteIcon } from "@icons/DeleteIcon";
 
 const ProductDetailPage = () => {
   const [product, setProduct] = useState<Inventory | null>(null);
@@ -102,12 +103,9 @@ const ProductDetailPage = () => {
             text="Copy"
             ariaLabel="Copy Product"
           />
-          <Link
-            onClick={handleDelete}
-            linkClass="redLink"
-            text="Delete"
-            ariaLabel="Delete Product"
-          />
+          <button onClick={handleDelete} aria-label="Delete Product">
+            <DeleteIcon title="Delete Product" />
+          </button>
         </div>
       </div>
 
