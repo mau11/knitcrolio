@@ -6,7 +6,7 @@ import { getYarnById, deleteYarn } from "@lib/api";
 import { Yarn } from "@prisma/client";
 import YarnImage from "@components/YarnImage";
 import { Link } from "@components/Link";
-import { DeleteIcon } from "@icons/DeleteIcon";
+import { DeleteIcon, CopyIcon, EditIcon } from "@icons/index";
 
 const YarnDetailPage = () => {
   const [yarn, setYarn] = useState<Yarn | null>(null);
@@ -78,19 +78,21 @@ const YarnDetailPage = () => {
           text="← Back to Stash"
           ariaLabel="Back to yarn list"
         />
-        <div className="flex gap-2 flex-wrap">
-          <Link
-            onClick={() => router.push(`/yarn/edit?id=${yarn.id}&action=edit`)}
-            linkClass="greenLink"
-            text="Edit"
-            ariaLabel="Edit Yarn"
-          />
-          <Link
+        <div className="flex gap-4 flex-wrap">
+          <button
             onClick={() => router.push(`/yarn/new?id=${yarn.id}&action=copy`)}
-            linkClass="blueLink"
-            text="Copy"
-            ariaLabel="Copy Yarn"
-          />
+            aria-label="Copy Yarn"
+          >
+            <CopyIcon title="Copy Yarn" />
+          </button>
+
+          <button
+            onClick={() => router.push(`/yarn/edit?id=${yarn.id}&action=edit`)}
+            aria-label="Edit Yarn"
+          >
+            <EditIcon title="Edit Yarn" />
+          </button>
+
           <button onClick={handleDelete} aria-label="Delete Yarn">
             <DeleteIcon title="Delete Yarn" />
           </button>

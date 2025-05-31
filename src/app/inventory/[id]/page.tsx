@@ -6,7 +6,7 @@ import { deleteProduct, getProductById } from "@lib/api";
 import { Inventory } from "@prisma/client";
 import { Link } from "@components/Link";
 import { Decimal } from "@prisma/client/runtime/library";
-import { DeleteIcon } from "@icons/DeleteIcon";
+import { DeleteIcon, CopyIcon, EditIcon } from "@icons/index";
 
 const ProductDetailPage = () => {
   const [product, setProduct] = useState<Inventory | null>(null);
@@ -86,23 +86,25 @@ const ProductDetailPage = () => {
           text="← Back to Inventory"
           ariaLabel="Back to Inventory"
         />
-        <div className="flex gap-2 flex-wrap">
-          <Link
-            onClick={() =>
-              router.push(`/inventory/edit?id=${product.id}&action=edit`)
-            }
-            linkClass="greenLink"
-            text="Edit"
-            ariaLabel="Edit Product"
-          />
-          <Link
+        <div className="flex gap-4 flex-wrap">
+          <button
             onClick={() =>
               router.push(`/inventory/new?id=${product.id}&action=copy`)
             }
-            linkClass="blueLink"
-            text="Copy"
-            ariaLabel="Copy Product"
-          />
+            aria-label="Copy Product"
+          >
+            <CopyIcon title="Copy Product" />
+          </button>
+
+          <button
+            onClick={() =>
+              router.push(`/inventory/edit?id=${product.id}&action=edit`)
+            }
+            aria-label="Edit Product"
+          >
+            <EditIcon title="Edit Product" />
+          </button>
+
           <button onClick={handleDelete} aria-label="Delete Product">
             <DeleteIcon title="Delete Product" />
           </button>

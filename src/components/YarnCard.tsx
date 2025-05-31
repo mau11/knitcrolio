@@ -4,8 +4,7 @@ import { Yarn } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import YarnImage from "@components/YarnImage";
 import { MouseEvent, useCallback } from "react";
-import { Link } from "@components/Link";
-import { DeleteIcon } from "@icons/DeleteIcon";
+import { DeleteIcon, CopyIcon, EditIcon } from "@icons/index";
 
 type YarnCardProps = {
   yarn: Yarn;
@@ -18,7 +17,7 @@ const YarnCard = ({ yarn, onDelete }: YarnCardProps) => {
   const router = useRouter();
 
   const handleClick = useCallback(
-    (e: MouseEvent<HTMLAnchorElement>, action: "copy" | "edit") => {
+    (e: MouseEvent<HTMLButtonElement>, action: "copy" | "edit") => {
       e.stopPropagation();
 
       // Navigate to YarnForm with pre-populated fields using query parameters
@@ -70,18 +69,20 @@ const YarnCard = ({ yarn, onDelete }: YarnCardProps) => {
         <YarnImage imageUrl={yarn.imageUrl} />
       </div>
       <div className="flex justify-between mt-4">
-        <Link
+        <button
           onClick={(e) => handleClick(e, "copy")}
-          linkClass="blueLink"
-          text="Copy"
-          ariaLabel="Copy"
-        />
-        <Link
+          aria-label="Delete Yarn"
+        >
+          <CopyIcon title="Copy Yarn" />
+        </button>
+
+        <button
           onClick={(e) => handleClick(e, "edit")}
-          linkClass="greenLink"
-          text="Edit"
-          ariaLabel="Edit"
-        />
+          aria-label="Delete Yarn"
+        >
+          <EditIcon title="Edit Yarn" />
+        </button>
+
         <button onClick={handleDelete} aria-label="Delete Yarn">
           <DeleteIcon title="Delete Yarn" />
         </button>

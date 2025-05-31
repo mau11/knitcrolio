@@ -1,13 +1,13 @@
 import { IconBaseProps } from "react-icons";
-import { FaTrashAlt } from "react-icons/fa";
+import { FaRegCopy } from "react-icons/fa";
 
-export const DeleteIcon = ({
-  color = "oklch(57.7% 0.245 27.325)", // tailwind red-600,
-  title = "Delete",
+export const CopyIcon = ({
+  color = "oklch(62.3% 0.214 259.815)", // tailwind blue-500,
+  title = "Copy",
   ...rest
 }: IconBaseProps) => {
   return (
-    <FaTrashAlt
+    <FaRegCopy
       color={color}
       title={title}
       size={20}

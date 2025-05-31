@@ -2,9 +2,8 @@
 
 import { Inventory } from "@prisma/client";
 import { usePathname, useRouter } from "next/navigation";
-import { Link } from "@components/Link";
 import { MouseEvent, useCallback } from "react";
-import { DeleteIcon } from "@icons/DeleteIcon";
+import { DeleteIcon, CopyIcon, EditIcon } from "@icons/index";
 
 type ProductCardProps = {
   product: Inventory;
@@ -18,7 +17,7 @@ const ProductCard = ({ product, onDelete }: ProductCardProps) => {
   const pathname = usePathname();
 
   const handleClick = useCallback(
-    (e: MouseEvent<HTMLAnchorElement>, action: "copy" | "edit") => {
+    (e: MouseEvent<HTMLButtonElement>, action: "copy" | "edit") => {
       e.stopPropagation();
 
       // Navigate to InventoryForm with pre-populated fields using query parameters
@@ -63,20 +62,22 @@ const ProductCard = ({ product, onDelete }: ProductCardProps) => {
         </div>
       </div>
       <div className="flex justify-between mt-4">
-        <Link
+        <button
           onClick={(e) => handleClick(e, "copy")}
-          linkClass="blueLink"
-          text="Copy"
-          ariaLabel="Copy"
-        />
-        <Link
+          aria-label="Delete Product"
+        >
+          <CopyIcon title="Copy Product" />
+        </button>
+
+        <button
           onClick={(e) => handleClick(e, "edit")}
-          linkClass="greenLink"
-          text="Edit"
-          ariaLabel="Edit"
-        />
-        <button onClick={handleDelete} aria-label="Delete Yarn">
-          <DeleteIcon title="Delete Yarn" />
+          aria-label="Delete Product"
+        >
+          <EditIcon title="Edit Product" />
+        </button>
+
+        <button onClick={handleDelete} aria-label="Delete Product">
+          <DeleteIcon title="Delete Product" />
         </button>
       </div>
     </article>

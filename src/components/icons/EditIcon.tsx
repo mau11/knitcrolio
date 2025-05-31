@@ -1,16 +1,16 @@
 import { IconBaseProps } from "react-icons";
-import { FaTrashAlt } from "react-icons/fa";
+import { BiEditAlt } from "react-icons/bi";
 
-export const DeleteIcon = ({
-  color = "oklch(57.7% 0.245 27.325)", // tailwind red-600,
-  title = "Delete",
+export const EditIcon = ({
+  color = "oklch(62.7% 0.194 149.214)", // tailwind green-600,
+  title = "Edit",
   ...rest
 }: IconBaseProps) => {
   return (
-    <FaTrashAlt
+    <BiEditAlt
       color={color}
       title={title}
-      size={20}
+      size={22}
       {...rest}
       className="cursor-pointer opacity-60 hover:opacity-100"
     />

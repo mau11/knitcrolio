@@ -22,8 +22,6 @@ export const Button = ({
   const baseClass =
     "focus:outline-none transition-colors duration-200 cursor-pointer";
 
-  const linkClass = "mt-4 inline-block text-sm hover:underline ";
-
   const styles: Record<ButtonVariant, string> = {
     primary: "px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600",
     secondary: "px-4 py-2 rounded bg-gray-500 text-white hover:bg-gray-600",
