@@ -3,7 +3,7 @@ import YarnForm from "@components/YarnForm";
 const AddNewYarn = () => {
   return (
     <div className="py-4">
-      <h1 className="text-2xl mb-4">Add New Yarn</h1>
+      <h1>Add New Yarn</h1>
       <YarnForm />
     </div>
   );

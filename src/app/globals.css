@@ -21,9 +21,11 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  h1,
+  h1 {
+    @apply text-2xl mb-4 font-bold text-gray-800;
+  }
   h2 {
-    @apply font-bold text-aqua;
+    @apply text-aqua;
   }
   * {
     box-sizing: border-box;

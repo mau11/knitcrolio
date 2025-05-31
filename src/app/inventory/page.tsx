@@ -52,7 +52,7 @@ const InventoryPage = () => {
 
   return (
     <div className="py-4">
-      <h1 className="text-2xl mb-4">My Product Inventory</h1>
+      <h1>My Product Inventory</h1>
       {inventory?.length > 0 ? (
         <section>
           <div className="flex justify-between">

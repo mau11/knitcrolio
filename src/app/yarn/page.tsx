@@ -44,7 +44,7 @@ const YarnPage = () => {
 
   return (
     <div className="py-4">
-      <h1 className="text-2xl mb-4">My Yarn Stash</h1>
+      <h1>My Yarn Stash</h1>
       {stash?.length > 0 ? (
         <section>
           <div className="flex justify-between">
