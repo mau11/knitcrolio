@@ -61,7 +61,7 @@ const YarnDetailPage = () => {
     { label: "Color Family", value: yarn.colorFamily },
     { label: "Weight", value: yarn.weight },
     { label: "Material", value: yarn.material },
-    { label: "Skein Weight", value: yarn.skeinWeight },
+    { label: "Skein Size", value: yarn.skeinWeight },
     { label: "Quantity", value: yarn.qty },
     { label: "Care Instructions", value: yarn.care },
     { label: "Notes", value: yarn.notes },

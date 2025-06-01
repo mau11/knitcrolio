@@ -8,9 +8,13 @@ const Navbar = () => {
       <Link href="/" className="text-4xl text-aqua font-leckerli">
         Knitcrolio
       </Link>
-      <div className="space-x-8">
-        <Link href="/yarn">Yarn Stash</Link>
-        <Link href="/inventory">Inventory</Link>
+      <div className="space-x-8 ">
+        <Link className="hover:font-semibold" href="/yarn">
+          Yarn Stash
+        </Link>
+        <Link className="hover:font-semibold" href="/inventory">
+          Inventory
+        </Link>
       </div>
     </nav>
   );

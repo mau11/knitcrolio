@@ -20,10 +20,10 @@ export const Button = ({
   ...rest
 }: ButtonProps) => {
   const baseClass =
-    "focus:outline-none transition-colors duration-200 cursor-pointer";
+    "focus:outline-none transition-colors duration-200 cursor-pointer hover:shadow-md";
 
   const styles: Record<ButtonVariant, string> = {
-    primary: "px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600",
+    primary: "px-4 py-2 rounded bg-aqua text-white font-bold hover:bg-aqua",
     secondary: "px-4 py-2 rounded bg-gray-500 text-white hover:bg-gray-600",
     delete: "px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700",
   };

@@ -24,9 +24,6 @@
   h1 {
     @apply text-2xl mb-4 font-bold text-gray-800;
   }
-  h2 {
-    @apply text-aqua;
-  }
   * {
     box-sizing: border-box;
     padding: 0;
