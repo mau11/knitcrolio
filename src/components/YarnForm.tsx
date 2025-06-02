@@ -75,6 +75,7 @@ const YarnForm = () => {
     try {
       if (id && isEdit) {
         await editYarn(data, Number(id));
+        alert(`${parsed.data.color} (${parsed.data.brand}) yarn edited.`);
         router.push("/yarn");
       } else {
         await addYarn(data);

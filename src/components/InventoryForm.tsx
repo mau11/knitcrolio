@@ -88,6 +88,7 @@ const InventoryForm = () => {
     try {
       if (id && isEdit) {
         await editProduct(data, Number(id));
+        alert(`${parsed.data.variant} (${parsed.data.name}) edited.`);
         router.push("/inventory");
       } else {
         await addProduct(data);
