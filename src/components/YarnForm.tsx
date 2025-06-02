@@ -78,6 +78,9 @@ const YarnForm = () => {
         router.push("/yarn");
       } else {
         await addYarn(data);
+        alert(
+          `${parsed.data.color} (${parsed.data.brand}) yarn added to stash.`
+        );
         router.replace(pathname);
       }
       setSelectedBrand("");

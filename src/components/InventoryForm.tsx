@@ -91,6 +91,9 @@ const InventoryForm = () => {
         router.push("/inventory");
       } else {
         await addProduct(data);
+        alert(
+          `${parsed.data.variant} (${parsed.data.name}) added to inventory.`
+        );
         router.replace(pathname);
       }
       reset(initialFormState);
