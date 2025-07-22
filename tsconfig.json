@@ -19,6 +19,7 @@
       }
     ],
     "paths": {
+      "@auth": ["./auth.ts"],
       "@components/*": ["./src/components/*"],
       "@constants/*": ["./src/constants/*"],
       "@custom-types/*": ["./src/types/*"],
