@@ -8,7 +8,7 @@ const Login = () => {
 
   return (
     <form action={handleLogin}>
-      <button type="submit">Login with Google</button>
+      <button type="submit">Login</button>
     </form>
   );
 };
