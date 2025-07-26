@@ -1,3 +1,4 @@
+import { requireAuth } from "@lib/auth";
 import { yarnSchema } from "@lib/schemas/yarnSchema";
 import { PrismaClient, Yarn } from "@prisma/client";
 import { NextResponse } from "next/server";
@@ -8,6 +9,9 @@ export async function PUT(
   request: Request,
   { params }: { params: { id: number } }
 ) {
+  const session = await requireAuth();
+  if (session instanceof NextResponse) return session;
+
   const { id } = await params;
   const data: Yarn = await request.json();
 

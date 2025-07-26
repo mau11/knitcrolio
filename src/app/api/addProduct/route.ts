@@ -1,3 +1,4 @@
+import { requireAuth } from "@lib/auth";
 import { inventorySchema } from "@lib/schemas/inventorySchema";
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
@@ -5,6 +6,9 @@ import { NextResponse } from "next/server";
 const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
+  const session = await requireAuth();
+  if (session instanceof NextResponse) return session;
+
   try {
     const rawData = await request.json();
 

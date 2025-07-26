@@ -1,5 +1,5 @@
 import { YarnSchemaType } from "@schemas/yarnSchema";
-import { InventorySchemaType } from "./schemas/inventorySchema";
+import { InventorySchemaType } from "@schemas/inventorySchema";
 
 const fetchAPI = async (url: string, options?: RequestInit) => {
   const response = await fetch(url, options);

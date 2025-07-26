@@ -1,3 +1,4 @@
+import { requireAuth } from "@lib/auth";
 import { inventorySchema } from "@lib/schemas/inventorySchema";
 import { PrismaClient, Inventory } from "@prisma/client";
 import { NextResponse } from "next/server";
@@ -8,6 +9,9 @@ export async function PUT(
   request: Request,
   { params }: { params: { id: number } }
 ) {
+  const session = await requireAuth();
+  if (session instanceof NextResponse) return session;
+
   try {
     const { id } = await params;
     const data: Inventory = await request.json();

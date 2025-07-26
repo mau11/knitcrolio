@@ -1,3 +1,4 @@
+import { requireAuth } from "@lib/auth";
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 
@@ -7,6 +8,9 @@ export async function GET(
   req: Request,
   { params }: { params: { id: number } }
 ) {
+  const session = await requireAuth();
+  if (session instanceof NextResponse) return session;
+
   try {
     const { id } = await params;
 
