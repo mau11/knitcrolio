@@ -1,4 +1,4 @@
-import { requireAuth } from "@lib/auth";
+import { requireAuth } from "@lib/requireAuth";
 import { inventorySchema } from "@lib/schemas/inventorySchema";
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
@@ -8,6 +8,8 @@ const prisma = new PrismaClient();
 export async function POST(request: Request) {
   const session = await requireAuth();
   if (session instanceof NextResponse) return session;
+
+  const userId = session.user.id;
 
   try {
     const rawData = await request.json();
@@ -39,26 +41,25 @@ export async function POST(request: Request) {
       sku,
     } = validData;
 
-    const newInventoryData = {
-      name,
-      craft,
-      category,
-      size,
-      qty,
-      notes,
-      status,
-      recipient,
-      value,
-      price,
-      shippingTier,
-      variant,
-      sku,
-    };
-
     await prisma.$transaction(async (tx) => {
       // Create the new inventory record
       const newInventory = await tx.inventory.create({
-        data: newInventoryData,
+        data: {
+          userId,
+          name,
+          craft,
+          category,
+          size,
+          qty,
+          notes,
+          status,
+          recipient,
+          value,
+          price,
+          shippingTier,
+          variant,
+          sku,
+        },
       });
 
       // Use the new inventory's id to connect yarn used

@@ -1,4 +1,4 @@
-import { requireAuth } from "@lib/auth";
+import { requireAuth } from "@lib/requireAuth";
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 
@@ -11,11 +11,12 @@ export async function GET(
   const session = await requireAuth();
   if (session instanceof NextResponse) return session;
 
-  try {
-    const { id } = await params;
+  const userId = session.user.id;
+  const { id } = await params;
 
+  try {
     const inventory = await prisma.inventory.findUnique({
-      where: { id: Number(id) },
+      where: { id: Number(id), userId },
       include: {
         yarnUsed: {
           select: {
@@ -24,6 +25,14 @@ export async function GET(
         },
       },
     });
+
+    if (!inventory) {
+      return NextResponse.json(
+        { message: "Not authorized to view this product" },
+        { status: 403 }
+      );
+    }
+
     return NextResponse.json(inventory);
   } catch (error) {
     console.error("Error fetching product inventory:", error);

@@ -1,4 +1,4 @@
-import { requireAuth } from "@lib/auth";
+import { requireAuth } from "@lib/requireAuth";
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 
@@ -11,9 +11,22 @@ export async function DELETE(
   const session = await requireAuth();
   if (session instanceof NextResponse) return session;
 
+  const userId = session.user.id;
   const { id } = await params;
 
   try {
+    const yarn = await prisma.yarn.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (!yarn) {
+      return NextResponse.json({ error: "Yarn not found" }, { status: 404 });
+    }
+
+    if (yarn.userId !== userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    }
+
     await prisma.yarn.delete({
       where: { id: Number(id) },
     });

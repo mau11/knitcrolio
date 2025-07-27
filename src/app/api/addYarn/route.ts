@@ -1,4 +1,4 @@
-import { requireAuth } from "@lib/auth";
+import { requireAuth } from "@lib/requireAuth";
 import { yarnSchema } from "@lib/schemas/yarnSchema";
 import { PrismaClient, Yarn } from "@prisma/client";
 import { NextResponse } from "next/server";
@@ -8,6 +8,8 @@ const prisma = new PrismaClient();
 export async function POST(request: Request) {
   const session = await requireAuth();
   if (session instanceof NextResponse) return session;
+
+  const userId = session.user.id;
 
   try {
     const data: Yarn = await request.json();
@@ -20,7 +22,7 @@ export async function POST(request: Request) {
       });
     }
 
-    const validData = result.data;
+    const validData = { ...result.data, userId };
 
     const { brand, yarnType, color, colorFamily, weight, material, qty } =
       validData;

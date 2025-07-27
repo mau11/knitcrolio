@@ -1,4 +1,4 @@
-import { requireAuth } from "@lib/auth";
+import { requireAuth } from "@lib/requireAuth";
 import { inventorySchema } from "@lib/schemas/inventorySchema";
 import { PrismaClient, Inventory } from "@prisma/client";
 import { NextResponse } from "next/server";
@@ -12,8 +12,10 @@ export async function PUT(
   const session = await requireAuth();
   if (session instanceof NextResponse) return session;
 
+  const userId = session.user.id;
+  const { id } = await params;
+
   try {
-    const { id } = await params;
     const data: Inventory = await request.json();
 
     const result = inventorySchema.safeParse(data);
@@ -26,6 +28,18 @@ export async function PUT(
 
     const { yarnUsed, ...validData } = result.data;
     const inventoryId = Number(id);
+
+    const inventory = await prisma.inventory.findUnique({
+      where: { id: inventoryId },
+      select: { userId: true },
+    });
+
+    if (!inventory || inventory.userId !== userId) {
+      return NextResponse.json(
+        { message: "Forbidden: You do not have access to edit this product." },
+        { status: 403 }
+      );
+    }
 
     await prisma.$transaction(async (tx) => {
       // Update the inventory data
