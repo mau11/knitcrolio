@@ -29,7 +29,7 @@ enum InventoryStatus {
 
 // The Yarn model defines the structure of the yarn data in the database.
 model Yarn {
-  id          Int      @id @default(autoincrement())
+  id          Int               @id @default(autoincrement())
   brand       String
   yarnType    String // The brand's specific type or variety yarn.
   color       String // The brand's name of the color of the yarn.
@@ -38,13 +38,16 @@ model Yarn {
   material    String // The material the yarn is made from (e.g., acrylic, polyester).
   care        String? // Optional: Care instructions for the yarn
   skeinWeight String? // Optional: The weight of the skein (e.g., 10.5 oz)
-  qty         Float    @default(1) // Number of skeins for this particular type of yarn
+  qty         Float             @default(1) // Number of skeins for this particular type of yarn
   notes       String?
   imageUrl    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @default(now()) @updatedAt
+  usedIn      YarnOnInventory[] // All inventory items this yarn is used in
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
 
-  usedIn YarnOnInventory[] // All inventory items this yarn is used in
+  @@index([userId])
 }
 
 // The Inventory model defines the structure of the inventory data in the database.
@@ -66,10 +69,13 @@ model Inventory {
   status       InventoryStatus   @default(AVAILABLE)
   yarnUsed     YarnOnInventory[] // List of yarn used to create this product
   shippingTier String? // Optional: Shipping tier, used for calculating shipping costs
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
 
   @@index([status]) // Index for filtering by status
   @@index([category]) // Index for filtering by category
   @@index([size]) // Index for filtering by size
+  @@index([userId])
 }
 
 // The YarnOnInventory model defines the join table between Yarn and Inventory.
@@ -92,8 +98,10 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  Yarn      Yarn[]
+  Inventory Inventory[]
 }
 
 model Account {
