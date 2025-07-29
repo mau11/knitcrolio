@@ -8,6 +8,7 @@
 1. [Requirements](#requirements)
 1. [Development](#development)
    1. [Installing Dependencies](#installing-dependencies)
+   1. [Set up database](#set-up-database)
    1. [Running the Server](#running-the-server)
 1. [Contributing](#contributing)
 1. [License](#license)
@@ -35,6 +36,23 @@ From within the root directory:
 ```sh
 $ nvm use
 $ pnpm install
+```
+
+#### Set up database
+
+Log into postgres and create new database (replace username with your db username and password with your desired db password):
+
+```
+$ psql postgres
+postgres=# CREATE DATABASE knitcrolio;
+postgres=# \c knitcrolio
+knitcrolio=# ALTER USER username WITH PASSWORD 'password';
+```
+
+Run the following after making any changes to the schema:
+
+```sh
+$ pnpm prisma generate
 ```
 
 #### Running the Server
