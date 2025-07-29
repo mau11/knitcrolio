@@ -1,14 +1,13 @@
-import { signOut } from "@auth";
+"use client";
+
+import { logoutAction } from "@actions/logout";
 
 const Logout = () => {
   return (
-    <form
-      action={async () => {
-        "use server";
-        await signOut({ redirectTo: "/" });
-      }}
-    >
-      <button type="submit">Log out</button>
+    <form action={logoutAction} className="">
+      <button type="submit" className="hover:font-semibold cursor-pointer">
+        Log out
+      </button>
     </form>
   );
 };
