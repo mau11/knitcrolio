@@ -43,11 +43,18 @@ const UserDropdown = ({ image }: UserDropdownProps) => {
         )}
       </button>
 
-      {open && (
-        <div className="absolute right-0 mt-2 w-30 text-center bg-white border rounded shadow-md border-gray-300 z-50 p-2">
-          <Logout />
-        </div>
-      )}
+      <div
+        className={`absolute right-0 mt-2 w-30 text-center bg-white border rounded shadow-md
+          border-aqua-100 z-50 p-2 transition-all duration-300 ease-in transform origin-top-right
+          ${
+            open
+              ? "scale-100 opacity-100"
+              : "scale-70 opacity-0 pointer-events-none"
+          }
+        `}
+      >
+        <Logout />
+      </div>
     </span>
   );
 };

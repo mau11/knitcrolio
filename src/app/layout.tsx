@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Leckerli_One, Nunito } from "next/font/google";
 import "./globals.css";
-import Navbar from "@components/NavBar";
 import Footer from "@components/Footer";
+import NavbarWrapper from "@components/NavbarWrapper";
 
 const leckerli = Leckerli_One({
   weight: "400",
@@ -15,7 +15,7 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "knitcrolio",
+  title: "Knitcrolio",
   description: "Your cozy companion for logging knitting & crochet projects.",
 };
 
@@ -29,7 +29,7 @@ export default function RootLayout({
       <body
         className={`${leckerli.variable} ${nunito.variable} max-w-[90vw] lg:max-w-[70vw] mx-auto overflow-x-hidden`}
       >
-        <Navbar />
+        <NavbarWrapper />
         <main>{children}</main>
         <Footer />
       </body>
