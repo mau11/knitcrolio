@@ -4,8 +4,9 @@ import Link from "next/link";
 import Login from "@components/Login";
 import UserDropdown from "@components/UserDropdown";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Logout from "@components/Logout";
+import { useOutsideClick } from "@hooks/useOutsideClick";
 
 type SessionProps = {
   session: {
@@ -20,6 +21,9 @@ type SessionProps = {
 const Navbar = ({ session }: SessionProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useOutsideClick(ref, toggleMenu, isOpen);
 
   return (
     <nav className="w-full pt-4 pb-2 border-b border-gray-200 flex justify-between items-center">
@@ -57,6 +61,7 @@ const Navbar = ({ session }: SessionProps) => {
 
       {/* Mobile navbar menu */}
       <div
+        ref={ref}
         className={`
           absolute top-16 right-4 w-64 flex flex-col text-center bg-white border rounded-md shadow-md border-aqua-100 z-50 md:hidden sm:right-8 transition-all duration-300 ease-in
           transform origin-top-right

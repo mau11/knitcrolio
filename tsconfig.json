@@ -24,6 +24,7 @@
       "@components/*": ["./src/components/*"],
       "@constants/*": ["./src/constants/*"],
       "@custom-types/*": ["./src/types/*"],
+      "@hooks/*": ["./src/hooks/*"],
       "@form/*": ["./src/components/form/*"],
       "@icons/*": ["./src/components/icons/*"],
       "@lib/*": ["./src/lib/*"],

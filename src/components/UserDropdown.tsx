@@ -1,32 +1,26 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import Logout from "@components/Logout";
 import { FaUserLarge } from "react-icons/fa6";
+import { useOutsideClick } from "@hooks/useOutsideClick";
 
 type UserDropdownProps = {
   image?: string | null;
 };
 
 const UserDropdown = ({ image }: UserDropdownProps) => {
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  // Close dropdown if clicked outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const toggleDropdown = () => setIsOpen((prev) => !prev);
+
+  useOutsideClick(ref, toggleDropdown, isOpen);
 
   return (
     <span className="relative" ref={ref}>
       <button
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={toggleDropdown}
         className="flex items-center space-x-2 cursor-pointer"
       >
         {image ? (
@@ -47,7 +41,7 @@ const UserDropdown = ({ image }: UserDropdownProps) => {
         className={`absolute right-0 mt-2 w-30 text-center bg-white border rounded shadow-md
           border-aqua-100 z-50 p-2 transition-all duration-300 ease-in transform origin-top-right
           ${
-            open
+            isOpen
               ? "scale-100 opacity-100"
               : "scale-70 opacity-0 pointer-events-none"
           }
