@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Login from "@components/Login";
 import UserDropdown from "@components/UserDropdown";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useRef, useState } from "react";
@@ -33,7 +32,7 @@ const Navbar = ({ session }: SessionProps) => {
 
       {/* Desktop navbar menu */}
       <div className="hidden md:flex">
-        {session?.user ? (
+        {session?.user && (
           <div className="flex gap-4 items-center">
             <Link className="hover:font-semibold" href="/yarn">
               Yarn Stash
@@ -43,26 +42,26 @@ const Navbar = ({ session }: SessionProps) => {
             </Link>
             <UserDropdown image={session.user.image} />
           </div>
-        ) : (
-          <Login />
         )}
       </div>
 
       {/* Mobile navbar toggle */}
-      <div className="flex md:hidden cursor-pointer">
-        <button
-          onClick={toggleMenu}
-          className="lg:hidden text-2xl text-gray-800"
-          aria-label="Toggle menu"
-        >
-          {isOpen ? <FaTimes /> : <FaBars />}
-        </button>
-      </div>
+      {session?.user && (
+        <div className="flex md:hidden cursor-pointer" ref={ref}>
+          <button
+            onClick={toggleMenu}
+            className="lg:hidden text-2xl text-gray-800"
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <FaTimes /> : <FaBars />}
+          </button>
+        </div>
+      )}
 
       {/* Mobile navbar menu */}
-      <div
-        ref={ref}
-        className={`
+      {session?.user && (
+        <div
+          className={`
           absolute top-16 right-4 w-64 flex flex-col text-center bg-white border rounded-md shadow-md border-aqua-100 z-50 md:hidden sm:right-8 transition-all duration-300 ease-in
           transform origin-top-right
           ${
@@ -71,8 +70,7 @@ const Navbar = ({ session }: SessionProps) => {
               : "scale-70 opacity-0 pointer-events-none"
           }
         `}
-      >
-        {session?.user ? (
+        >
           <>
             <Link
               href="/yarn"
@@ -90,10 +88,8 @@ const Navbar = ({ session }: SessionProps) => {
             </Link>
             <Logout />
           </>
-        ) : (
-          <Login />
-        )}
-      </div>
+        </div>
+      )}
     </nav>
   );
 };

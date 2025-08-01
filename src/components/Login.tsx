@@ -1,13 +1,12 @@
 "use client";
 
 import { loginAction } from "@actions/login";
+import { Button } from "@components/Button";
 
 const Login = () => {
   return (
     <form action={loginAction}>
-      <button type="submit" className="hover:font-semibold cursor-pointer">
-        Login
-      </button>
+      <Button type="submit" text="Log In to Your Account" ariaLabel="Login" />
     </form>
   );
 };
