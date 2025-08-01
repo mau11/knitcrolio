@@ -12,6 +12,7 @@
   --color-background: #f5fafa;
   --font-leckerli: "Leckerli One";
   --font-nunito: "Nunito";
+  --animate-jump: jump 1s ease;
 }
 
 @layer base {
@@ -36,5 +37,20 @@
   }
   button {
     @apply text-left;
+  }
+}
+
+@keyframes jump {
+  0% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(2px);
+  }
+  100% {
+    transform: translateY(0);
   }
 }
