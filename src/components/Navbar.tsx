@@ -47,48 +47,49 @@ const Navbar = ({ session }: SessionProps) => {
 
       {/* Mobile navbar toggle */}
       {session?.user && (
-        <div className="flex md:hidden cursor-pointer" ref={ref}>
-          <button
-            onClick={toggleMenu}
-            className="lg:hidden text-2xl text-gray-800"
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <FaTimes /> : <FaBars />}
-          </button>
-        </div>
-      )}
+        <span ref={ref} className="flex md:hidden cursor-pointer">
+          <div>
+            <button
+              onClick={toggleMenu}
+              className="lg:hidden text-2xl text-gray-800"
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <FaTimes /> : <FaBars />}
+            </button>
+          </div>
 
-      {/* Mobile navbar menu */}
-      {session?.user && (
-        <div
-          className={`
-          absolute top-16 right-4 w-64 flex flex-col text-center bg-white border rounded-md shadow-md border-aqua-100 z-50 md:hidden sm:right-8 transition-all duration-300 ease-in
-          transform origin-top-right
-          ${
-            isOpen
-              ? "scale-100 opacity-100"
-              : "scale-70 opacity-0 pointer-events-none"
-          }
-        `}
-        >
-          <>
-            <Link
-              href="/yarn"
-              className="py-3 px-6 w-full text-center hover:bg-aqua-50 transition"
-              onClick={() => setIsOpen(false)}
-            >
-              Yarn Stash
-            </Link>
-            <Link
-              href="/inventory"
-              className="py-3 px-6 w-full text-center hover:bg-aqua-50 transition"
-              onClick={() => setIsOpen(false)}
-            >
-              Inventory
-            </Link>
-            <Logout />
-          </>
-        </div>
+          {/* Mobile navbar menu */}
+          <div
+            className={`
+              absolute top-16 right-4 w-64 flex flex-col text-center bg-white border rounded-md
+              shadow-md border-aqua-100 z-50 md:hidden sm:right-8 transition-all duration-300
+              ease-in transform origin-top-right
+              ${
+                isOpen
+                  ? "scale-100 opacity-100"
+                  : "scale-70 opacity-0 pointer-events-none"
+              }
+            `}
+          >
+            <>
+              <Link
+                href="/yarn"
+                className="py-3 px-6 w-full text-center hover:bg-aqua-50 transition"
+                onClick={() => setIsOpen(false)}
+              >
+                Yarn Stash
+              </Link>
+              <Link
+                href="/inventory"
+                className="py-3 px-6 w-full text-center hover:bg-aqua-50 transition"
+                onClick={() => setIsOpen(false)}
+              >
+                Inventory
+              </Link>
+              <Logout />
+            </>
+          </div>
+        </span>
       )}
     </nav>
   );
