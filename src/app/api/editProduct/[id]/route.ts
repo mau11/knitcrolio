@@ -1,9 +1,8 @@
 import { requireAuth } from "@lib/requireAuth";
 import { inventorySchema } from "@lib/schemas/inventorySchema";
-import { PrismaClient, Inventory } from "@prisma/client";
+import { Inventory } from "@prisma/client";
 import { NextResponse } from "next/server";
-
-const prisma = new PrismaClient();
+import { prisma } from "@lib/prisma";
 
 export async function PUT(
   request: Request,
