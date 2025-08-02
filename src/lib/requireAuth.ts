@@ -1,14 +1,6 @@
 import { auth } from "@auth";
+import { UserSession } from "@custom-types/user";
 import { NextResponse } from "next/server";
-
-type UserSession = {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    image?: string;
-  };
-};
 
 export const requireAuth = async (): Promise<UserSession | NextResponse> => {
   const session = await auth();
