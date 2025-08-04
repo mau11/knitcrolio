@@ -1,21 +1,30 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Logout from "@components/Logout";
 import { FaUserLarge } from "react-icons/fa6";
 import { useOutsideClick } from "@hooks/useOutsideClick";
+import { isImageValid } from "@utils/isImageValid";
 
 type UserDropdownProps = {
-  image?: string | null;
+  image: string | null;
 };
 
 const UserDropdown = ({ image }: UserDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isValid, setIsValid] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   useOutsideClick(ref, toggleDropdown, isOpen);
+
+  useEffect(() => {
+    const checkImg = async () => {
+      setIsValid(await isImageValid(image));
+    };
+    checkImg();
+  }, [image]);
 
   return (
     <span className="relative" ref={ref}>
@@ -23,7 +32,7 @@ const UserDropdown = ({ image }: UserDropdownProps) => {
         onClick={toggleDropdown}
         className="flex items-center space-x-2 cursor-pointer"
       >
-        {image ? (
+        {image && isValid ? (
           <img
             src={image}
             alt="User Avatar"
@@ -31,7 +40,7 @@ const UserDropdown = ({ image }: UserDropdownProps) => {
           />
         ) : (
           <FaUserLarge
-            className="hover:scale-108 transition-transform duration-200"
+            className="h-5 w-5 hover:scale-108 transition-transform duration-200"
             title="User Avatar"
           />
         )}

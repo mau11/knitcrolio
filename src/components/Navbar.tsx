@@ -6,16 +6,7 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import { useRef, useState } from "react";
 import Logout from "@components/Logout";
 import { useOutsideClick } from "@hooks/useOutsideClick";
-
-type SessionProps = {
-  session: {
-    user?: {
-      name?: string | null;
-      email?: string | null;
-      image?: string | null;
-    };
-  } | null;
-};
+import { SessionProps } from "@custom-types/user";
 
 const Navbar = ({ session }: SessionProps) => {
   const [isOpen, setIsOpen] = useState(false);
